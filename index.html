@@ -157,7 +157,7 @@ body {
     100% { transform: translateY(-600px) translateX(20px); opacity: 0; }
 }
 
-/* Cabeçalho alinhado à esquerda */
+/* Cabeçalho */
 .header {
     position: relative;
     background: var(--header-bg);
@@ -336,7 +336,6 @@ input:checked + .slider::before { opacity: 0.4; }
     box-shadow: var(--server-shadow);
 }
 
-/* CORRIGIDO: Agora a barra de energia acompanha dinamicamente a cor do tema/paleta */
 .energy-bar {
     height: 5px;
     width: 100%;
@@ -420,17 +419,25 @@ input:checked + .slider::before { opacity: 0.4; }
 </div>
 
 <script>
-// Recupera o estado do Tema (light ou dark) do LocalStorage
+// EXECUTAR AO CARREGAR A PÁGINA: Recupera o Tema E a Paleta de Cores salvos
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Carrega o tema (Light / Dark)
     const savedTheme = localStorage.getItem("app-theme");
     const themeChk = document.getElementById("theme-toggle-chk");
-    
     if (savedTheme === "light") {
         document.documentElement.setAttribute("data-theme", "light");
         themeChk.checked = true;
     } else {
         document.documentElement.removeAttribute("data-theme");
         themeChk.checked = false;
+    }
+
+    // 2. Carrega a Paleta de Cores
+    const savedPalette = localStorage.getItem("app-palette");
+    if (savedPalette && savedPalette !== "default") {
+        document.documentElement.setAttribute("data-palette", savedPalette);
+    } else {
+        document.documentElement.removeAttribute("data-palette");
     }
 });
 
@@ -481,8 +488,10 @@ function setPalette(name) {
     const body = document.documentElement;
     if (name === 'default') {
         body.removeAttribute("data-palette");
+        localStorage.setItem("app-palette", "default"); // Salva paleta padrão no storage
     } else {
         body.setAttribute("data-palette", name);
+        localStorage.setItem("app-palette", name);    // Salva nova paleta selecionada no storage
     }
     document.getElementById("color-menu").classList.remove("active");
 }
