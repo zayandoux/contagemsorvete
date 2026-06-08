@@ -116,13 +116,13 @@ body {
     align-items: center;
 }
 
-/* INTERRUPTOR MINI SOL/LUA FIXADO */
+/* INTERRUPTOR MINI SOL/LUA ULTRA COMPACTO */
 .theme-switch {
     position: absolute;
     right: 25px;
     display: inline-block;
-    width: 18px;  /* Tamanho reduzido compacto */
-    height: 10px; /* Tamanho reduzido compacto */
+    width: 28px;  /* Largura reduzida ao máximo */
+    height: 16px; /* Altura super delicada */
     cursor: pointer;
 }
 
@@ -137,23 +137,23 @@ body {
     top: 0; left: 0; right: 0; bottom: 0;
     background-color: var(--switch-bg);
     transition: 0.3s;
-    border-radius: 20px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 4px;
+    padding: 0 2px;
 }
 
 .slider::before {
     content: "🌙";
-    font-size: 9px;
+    font-size: 7px;
     order: 2;
     transition: 0.3s;
 }
 
 .slider::after {
     content: "☀️";
-    font-size: 9px;
+    font-size: 7px;
     order: 1;
     opacity: 0.3;
     transition: 0.3s;
@@ -161,14 +161,14 @@ body {
 
 .knob {
     position: absolute;
-    height: 14px;
-    width: 14px;
-    left: 3px;
-    bottom: 3px;
+    height: 12px;
+    width: 12px;
+    left: 2px;
+    bottom: 2px;
     background-color: white;
     transition: 0.3s ease-in-out;
     border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
     z-index: 2;
 }
 
@@ -177,7 +177,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider .knob {
-    transform: translateX(18px); /* Trava o clique na proporção certa */
+    transform: translateX(12px); /* Deslocamento proporcional ao tamanho micro */
 }
 
 input:checked + .slider::before {
@@ -188,7 +188,7 @@ input:checked + .slider::after {
     opacity: 1;
 }
 
-/* Login - Alinhamento idêntico ao original */
+/* Login - Mantendo a proporção exata da caixa original */
 .login {
     display: flex;
     gap: 15px;
