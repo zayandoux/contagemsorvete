@@ -3,44 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M3U Hub | Matrix Control</title>
+<title>M3U Hub | Root Terminal</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
-/* Sistema de Cores Industriais/Analógicas */
+/* Sistema de Cores Retro-Futurista / Terminal */
 :root {
-    --bg-main: #0f1115;
-    --bg-panel: #161920;
-    --bg-block: #1e222b;
-    --border: #2a2f3d;
-    --text-main: #f8fafc;
-    --text-muted: #64748b;
-    --accent: #2563eb; /* Azul Elétrico/Técnico */
-    --accent-hover: #1d4ed8;
-    --shadow: rgba(0, 0, 0, 0.5);
-    --switch-bg: #334155;
+    --bg-main: #050505;
+    --bg-terminal: #0a0a0a;
+    --border: #1f2937;
+    --text-main: #22c55e; /* Verde Hacker Tradicional */
+    --text-muted: #15803d;
+    --accent: #4ade80;
+    --shadow: rgba(34, 197, 94, 0.05);
+    --switch-bg: #141414;
 }
 
 [data-theme="light"] {
-    --bg-main: #f1f5f9;
-    --bg-panel: #ffffff;
-    --bg-block: #f8fafc;
-    --border: #cbd5e1;
-    --text-main: #0f172a;
+    --bg-main: #f8fafc;
+    --bg-terminal: #ffffff;
+    --border: #e2e8f0;
+    --text-main: #0f172a; /* Modo Amber/Escuro Clássico se quiser alterar, aqui deixamos cinza escuro corporativo */
     --text-muted: #64748b;
     --accent: #2563eb;
-    --accent-hover: #1d4ed8;
-    --shadow: rgba(0, 0, 0, 0.05);
+    --shadow: rgba(0,0,0,0.02);
     --switch-bg: #e2e8f0;
 }
 
 * {
     box-sizing: border-box;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Fira Code', monospace; /* Fonte estilo código */
     margin: 0;
     padding: 0;
-    transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 body {
@@ -50,48 +46,54 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px 20px;
+    padding: 20px;
 }
 
-/* Console Rack Central */
-.matrix-rack {
+/* Caixa do Terminal Shell */
+.terminal-window {
     width: 100%;
-    max-width: 960px;
-    background-color: var(--bg-panel);
-    border: 2px solid var(--border);
-    border-radius: 20px;
-    padding: 35px;
-    box-shadow: 0 25px 50px -12px var(--shadow);
+    max-width: 850px;
+    background-color: var(--bg-terminal);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 20px 40px var(--shadow);
+    overflow: hidden;
 }
 
-/* Cabeçalho do Console */
-.rack-header {
+/* Barra de Topo do Sistema Operacional */
+.terminal-topbar {
+    background-color: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px dashed var(--border);
-    padding-bottom: 25px;
-    margin-bottom: 30px;
 }
 
-.rack-title h2 {
-    font-size: 20px;
-    font-weight: 700;
+.window-dots {
+    display: flex;
+    gap: 8px;
+}
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--border);
+}
+
+.window-title {
+    font-size: 11px;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-.rack-title p {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 2px;
-}
 
-/* Interruptor Minimalista Lua/Sol */
+/* Interruptor Minimalista Sol/Lua */
 .theme-switch {
     position: relative;
     display: inline-block;
-    width: 54px;
-    height: 28px;
+    width: 44px;
+    height: 22px;
 }
 .theme-switch input { opacity: 0; width: 0; height: 0; }
 .slider {
@@ -100,229 +102,158 @@ body {
     top: 0; left: 0; right: 0; bottom: 0;
     background-color: var(--switch-bg);
     transition: 0.3s;
-    border-radius: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 6px;
+    border-radius: 22px;
+    border: 1px solid var(--border);
 }
-.slider::before { content: "🌙"; font-size: 12px; order: 2; }
-.slider::after { content: "☀️"; font-size: 12px; order: 1; opacity: 0.3; }
-.knob {
+.slider::before {
     position: absolute;
-    height: 22px;
-    width: 22px;
+    content: "";
+    height: 14px;
+    width: 14px;
     left: 3px;
     bottom: 3px;
-    background-color: white;
+    background-color: var(--text-main);
     transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 50%;
-    z-index: 2;
 }
-input:checked + .slider { background-color: var(--accent); }
-input:checked + .slider .knob { transform: translateX(26px); }
-input:checked + .slider::before { opacity: 0.3; }
-input:checked + .slider::after { opacity: 1; }
-
-/* Bloco Superior de Parâmetros (Inputs) */
-.parameter-bar {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 35px;
-    background-color: var(--bg-block);
-    padding: 15px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
+input:checked + .slider::before {
+    transform: translateX(22px);
 }
 
-.param-field {
-    flex: 1;
+/* Área Interna de Linhas do Console */
+.terminal-body {
+    padding: 25px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-}
-
-.param-field label {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-}
-
-.param-field input {
-    background-color: var(--bg-main);
-    border: 1px solid var(--border);
-    color: var(--text-main);
-    padding: 12px 16px;
-    border-radius: 8px;
+    gap: 14px;
     font-size: 14px;
-    font-weight: 600;
-    outline: none;
-}
-.param-field input:focus {
-    border-color: var(--accent);
+    line-height: 1.6;
 }
 
-.btn-connect {
-    align-self: flex-end;
-    height: 45px;
-    padding: 0 30px;
-    background-color: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-}
-.btn-connect:hover {
-    background-color: var(--accent-hover);
+.system-output {
+    color: var(--text-muted);
 }
 
-/* Malha/Matriz de Portas dos Servidores */
-.matrix-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-}
-
-/* Módulo Desconectado/Inativo por padrão */
-.matrix-node {
-    background-color: var(--bg-block);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px;
+/* Linha de Prompt Ativa (Entrada de comandos) */
+.command-line {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    opacity: 0.6; /* Efeito apagado antes de gerar */
-}
-
-/* Ativado via JS após o clique */
-.matrix-node.online {
-    opacity: 1;
-    border-color: var(--accent);
-    box-shadow: 0 0 15px rgba(37, 99, 235, 0.1);
-}
-
-.node-header {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
 
-.node-title {
+.prompt-symbol {
+    color: var(--accent);
     font-weight: 700;
+}
+
+.cmd-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-main);
     font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-family: 'Fira Code', monospace;
+    width: 100%;
 }
 
-/* Indicador que muda de cor conforme o estado */
-.node-led {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #475569; /* Led apagado */
-    transition: background-color 0.3s;
-}
-.matrix-node.online .node-led {
-    background-color: #22c55e; /* Led verde online */
-    box-shadow: 0 0 8px #22c55e;
+/* Log de Servidores Printados */
+.terminal-log {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
 }
 
-.node-link-preview {
-    font-size: 12px;
+.log-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(34, 197, 94, 0.1);
+}
+[data-theme="light"] .log-row {
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+}
+
+.server-info-cli {
+    white-space: nowrap;
+}
+
+.server-url-cli {
     color: var(--text-muted);
-    background-color: var(--bg-main);
-    padding: 6px 10px;
-    border-radius: 6px;
+    font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: 1px solid var(--border);
+    max-width: 380px;
+    flex: 1;
+    margin-left: 15px;
 }
 
-.node-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+.cli-actions {
+    display: flex;
+    gap: 12px;
 }
 
-.node-actions button {
-    padding: 8px 0;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    border-radius: 6px;
+.cli-link {
+    color: var(--accent);
+    text-decoration: none;
     cursor: pointer;
-    border: 1px solid var(--border);
-    background-color: var(--bg-main);
-    color: var(--text-main);
+    font-weight: 700;
+    background: none;
+    border: none;
+    font-size: 13px;
+}
+.cli-link:hover {
+    text-decoration: underline;
 }
 
-/* Desabilita cliques nos botões enquanto offline */
-.matrix-node:not(.online) .node-actions button {
-    pointer-events: none;
-    opacity: 0.4;
+.cli-link.copied {
+    color: #ffffff;
+    background-color: var(--text-muted);
+    padding: 0 4px;
 }
-
-.btn-m3u-action {
-    background-color: var(--accent) !important;
-    color: white !important;
-    border: none !important;
-}
-.btn-m3u-action:hover { background-color: var(--accent-hover) !important; }
-
-.node-actions button.copied {
-    background-color: #22c55e !important;
-    color: white !important;
-    border: none !important;
-}
-
-@media(max-width: 900px) { .matrix-grid { grid-template-columns: repeat(2, 1fr); } }
-@media(max-width: 640px) {
-    .matrix-grid { grid-template-columns: 1fr; }
-    .parameter-bar { flex-direction: column; }
-    .btn-connect { width: 100%; }
+[data-theme="light"] .cli-link.copied {
+    color: #ffffff;
+    background-color: #22c55e;
 }
 </style>
 </head>
 <body>
 
-<div class="matrix-rack">
-    <div class="rack-header">
-        <div class="rack-title">
-            <h2>Matrix Connection Rack</h2>
-            <p>Terminal Central de Linkagem M3U</p>
+<div class="terminal-window">
+    <div class="terminal-topbar">
+        <div class="window-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
         </div>
-        <label class="theme-switch" title="Mudar Modo de Cor">
+        <div class="window-title">bash - m3uhub@root</div>
+        <label class="theme-switch" title="Mudar Paleta de Cores">
             <input type="checkbox" id="theme-toggle-chk" onchange="toggleTheme()">
-            <div class="slider"><span class="knob"></span></div>
+            <div class="slider"></div>
         </label>
     </div>
 
-    <div class="parameter-bar">
-        <div class="param-field">
-            <label>Linha de Usuário</label>
-            <input type="text" id="user" placeholder="Acesso ID" autocomplete="off">
+    <div class="terminal-body">
+        <div class="system-output">
+            M3U Hub Core OS v3.0.0 (personal_build)<br>
+            Digite o comando estruturado para gerar as listagens.<br>
+            Sintaxe: <span style="color: var(--text-main)">gerar [usuario] [senha]</span>
         </div>
-        <div class="param-field">
-            <label>Chave de Segurança</label>
-            <input type="text" id="pass" placeholder="Password Token" autocomplete="off">
-        </div>
-        <button class="btn-connect" onclick="energizarMatriz()">Alimentar</button>
-    </div>
 
-    <div class="matrix-grid" id="matrixGrid"></div>
+        <div id="terminalConsole" class="terminal-log"></div>
+
+        <div class="command-line">
+            <span class="prompt-symbol">m3uhub ~ $</span>
+            <input type="text" id="cliInput" class="cmd-input" placeholder="gerar user123 pass123" autofocus autocomplete="off">
+        </div>
+    </div>
 </div>
 
 <script>
-// Dados brutos estáticos dos servidores
 const servidores = [
     {nome:"Seven", url:"http://seven.blcplay.com"},
     {nome:"Explosion", url:"http://nsync.space"},
@@ -335,29 +266,12 @@ const servidores = [
     {nome:"Fire", url:"http://fire.kkrototv.fun"}
 ];
 
-// Inicializa a malha física assim que a página abre (em estado offline)
-function renderizarMalhaInicial() {
-    let grid = document.getElementById("matrixGrid");
-    grid.innerHTML = "";
-
-    servidores.forEach((s, i) => {
-        let block = document.createElement("div");
-        block.className = "matrix-node";
-        block.id = `node-${i}`;
-        block.innerHTML = `
-            <div class="node-header">
-                <div class="node-title">// ${s.nome}</div>
-                <div class="node-led"></div>
-            </div>
-            <div class="node-link-preview" id="preview-${i}">http://.../get.php</div>
-            <div class="node-actions">
-                <button id="m3u-${i}" class="btn-m3u-action">M3U</button>
-                <button id="dns-${i}">DNS</button>
-            </div>
-        `;
-        grid.appendChild(block);
-    });
-}
+// Captura a tecla enter na linha de comando
+document.getElementById('cliInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        processarComando(this.value);
+    }
+});
 
 function toggleTheme() {
     const body = document.documentElement;
@@ -368,44 +282,71 @@ function toggleTheme() {
     }
 }
 
-// "Energiza" o painel e insere as URLs dinamicamente sem recriar os elementos do zero
-function energizarMatriz() {
-    let user = document.getElementById("user").value.trim();
-    let pass = document.getElementById("pass").value.trim();
+function processarComando(valorCompleto) {
+    let consoleTerminal = document.getElementById("terminalConsole");
+    let inputField = document.getElementById("cliInput");
+    
+    let partes = valorCompleto.trim().split(/\s+/); // Divide por espaços
+    let comando = partes[0] ? partes[0].toLowerCase() : "";
+    let user = partes[1];
+    let pass = partes[2];
 
-    if (!user || !pass) {
-        alert("Erro de alimentação: Insira as credenciais.");
+    // Se o input estiver vazio, não faz nada
+    if(!comando) return;
+
+    // Reseta o input para o próximo comando
+    inputField.value = "";
+
+    // Comando "clear" para limpar a tela
+    if (comando === "clear" || comando === "cls") {
+        consoleTerminal.innerHTML = "";
         return;
     }
 
-    servidores.forEach((s, i) => {
-        let node = document.getElementById(`node-${i}`);
-        let preview = document.getElementById(`preview-${i}`);
-        let linkCompleto = `${s.url}/get.php?username=${user}&password=${pass}&type=m3u_plus&output=mpegts`;
+    // Validação da estrutura de geração
+    if (comando === "gerar") {
+        if (!user || !pass) {
+            consoleTerminal.innerHTML = `<div style="color: #ef4444">[ERRO] Parâmetros ausentes. Use: gerar [user] [pass]</div>`;
+            return;
+        }
 
-        // Ativa o visual e injeta os links
-        node.classList.add("online");
-        preview.innerText = linkCompleto;
+        consoleTerminal.innerHTML = `<div style="color: var(--accent)">[OK] Compilando links M3U para as credenciais injetadas...</div>`;
 
-        // Configura as ações de cópia dos botões agora ativos
-        document.getElementById(`m3u-${i}`).onclick = function() {
-            navigator.clipboard.writeText(linkCompleto);
-            this.innerText = "Copiado";
-            this.classList.add("copied");
-            setTimeout(() => { this.innerText = "M3U"; this.classList.remove("copied"); }, 1500);
-        };
+        servidores.forEach((s, i) => {
+            let linkCompleto = `${s.url}/get.php?username=${user}&password=${pass}&type=m3u_plus&output=mpegts`;
+            
+            let row = document.createElement("div");
+            row.className = "log-row";
+            row.innerHTML = `
+                <div class="server-info-cli">> ${s.nome}</div>
+                <div class="server-url-cli">${linkCompleto}</div>
+                <div class="cli-actions">
+                    <button id="copy-m3u-${i}" class="cli-link">[COPIAR_M3U]</button>
+                    <button id="copy-dns-${i}" class="cli-link">[DNS]</button>
+                </div>
+            `;
+            consoleTerminal.appendChild(row);
 
-        document.getElementById(`dns-${i}`).onclick = function() {
-            navigator.clipboard.writeText(s.url);
-            this.innerText = "Copiado";
-            this.classList.add("copied");
-            setTimeout(() => { this.innerText = "DNS"; this.classList.remove("copied"); }, 1500);
-        };
-    });
+            // Funções de clique puras integradas por ID
+            document.getElementById(`copy-m3u-${i}`).onclick = function() {
+                navigator.clipboard.writeText(linkCompleto);
+                this.innerText = "[COPIADO]";
+                this.classList.add("copied");
+                setTimeout(() => { this.innerText = "[COPIAR_M3U]"; this.classList.remove("copied"); }, 1200);
+            };
+
+            document.getElementById(`copy-dns-${i}`).onclick = function() {
+                navigator.clipboard.writeText(s.url);
+                this.innerText = "[COPIADO]";
+                this.classList.add("copied");
+                setTimeout(() => { this.innerText = "[DNS]"; this.classList.remove("copied"); }, 1200);
+            };
+        });
+    } else {
+        // Resposta caso digite qualquer outra coisa inválida
+        consoleTerminal.innerHTML = `<div style="color: #ef4444">[ERRO] Comando '${comando}' não reconhecido. Tente 'gerar' ou 'clear'.</div>`;
+    }
 }
-
-// Renderiza a estrutura assim que carregar
-renderizarMalhaInicial();
 </script>
 
 </body>
