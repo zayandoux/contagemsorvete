@@ -45,137 +45,158 @@
     --switch-bg: rgba(255, 255, 255, 0.4);
 }
 
-/* --- PALETAS DE CORES ANTIGAS E NOVAS --- */
+/* --- NOVAS PALETAS DOS SERVIDORES --- */
 
-/* 1. Cyber Punk */
-[data-palette="cyberpunk"] {
-    --panel-border: #ff007f;
-    --panel-shadow: 0 0 40px rgba(255, 0, 127, 0.5);
-    --header-bg: linear-gradient(90deg, #ff007f, #390099);
+/* 1. Seven (Azul Royal/Ciano) */
+[data-palette="seven"] {
+    --panel-border: #3b82f6;
+    --panel-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
+    --header-bg: linear-gradient(90deg, #1d4ed8, #3b82f6);
     --header-text: #ffffff;
-    --server-border: #00f0ff;
-    --server-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-    --link-color: #bffffc;
-    --particle-color: #ff007f;
+    --server-border: #06b6d4;
+    --server-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    --link-color: #cffaf2;
+    --particle-color: #3b82f6;
 }
-[data-theme="light"][data-palette="cyberpunk"] {
-    --panel-border: #ff007f;
-    --header-bg: linear-gradient(90deg, #ff007f, #aa00ff);
-    --server-border: #d500f9;
-    --link-color: #7b1fa2;
+[data-theme="light"][data-palette="seven"] {
+    --panel-border: #1d4ed8;
+    --header-bg: linear-gradient(90deg, #1e3a8a, #1d4ed8);
+    --server-border: #0369a1;
+    --link-color: #1e3a8a;
 }
 
-/* 2. Inferno */
-[data-palette="inferno"] {
-    --panel-border: #f97316;
-    --panel-shadow: 0 0 40px rgba(249, 115, 22, 0.5);
-    --header-bg: linear-gradient(90deg, #ef4444, #f97316);
+/* 2. Explosion (Chumbo/Amarelo Alerta) */
+[data-palette="explosion"] {
+    --panel-border: #facc15;
+    --panel-shadow: 0 0 40px rgba(250, 204, 21, 0.4);
+    --header-bg: linear-gradient(90deg, #451a03, #78350f);
+    --header-text: #facc15;
+    --server-border: #eab308;
+    --server-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
+    --link-color: #fef9c3;
+    --particle-color: #facc15;
+}
+[data-theme="light"][data-palette="explosion"] {
+    --panel-border: #ca8a04;
+    --header-bg: linear-gradient(90deg, #78350f, #ca8a04);
     --header-text: #ffffff;
-    --server-border: #facc15;
-    --server-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
-    --link-color: #fef08a;
-    --particle-color: #f97316;
-}
-[data-theme="light"][data-palette="inferno"] {
-    --panel-border: #e65100;
-    --header-bg: linear-gradient(90deg, #d84315, #ff8f00);
-    --server-border: #e65100;
-    --link-color: #bf360c;
+    --server-border: #854d0e;
+    --link-color: #713f12;
 }
 
-/* 3. Deep Ocean */
-[data-palette="ocean"] {
-    --panel-border: #06b6d4;
-    --panel-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
-    --header-bg: linear-gradient(90deg, #0284c7, #06b6d4);
-    --header-text: #ffffff;
-    --server-border: #38bdf8;
-    --server-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-    --link-color: #bae6fd;
-    --particle-color: #06b6d4;
-}
-[data-theme="light"][data-palette="ocean"] {
-    --panel-border: #006064;
-    --header-bg: linear-gradient(90deg, #01579b, #006064);
-    --server-border: #0277bd;
-    --link-color: #01579b;
-}
-
-/* 4. Purple Neon (NOVO) */
-[data-palette="purple"] {
-    --panel-border: #a855f7;
-    --panel-shadow: 0 0 40px rgba(168, 85, 247, 0.5);
-    --header-bg: linear-gradient(90deg, #6366f1, #a855f7);
-    --header-text: #ffffff;
-    --server-border: #c084fc;
-    --server-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
-    --link-color: #e9d5ff;
-    --particle-color: #a855f7;
-}
-[data-theme="light"][data-palette="purple"] {
-    --panel-border: #6b21a8;
-    --header-bg: linear-gradient(90deg, #4c1d95, #7e22ce);
-    --server-border: #6b21a8;
-    --link-color: #5b21b6;
-}
-
-/* 5. Gold Luxury (NOVO) */
-[data-palette="gold"] {
+/* 3. Speed (Amarelo Elétrico) */
+[data-palette="speed"] {
     --panel-border: #eab308;
     --panel-shadow: 0 0 40px rgba(234, 179, 8, 0.5);
-    --header-bg: linear-gradient(90deg, #ca8a04, #eab308);
+    --header-bg: linear-gradient(90deg, #ca8a04, #facc15);
     --header-text: #0a0f1a;
     --server-border: #fef08a;
     --server-shadow: 0 0 20px rgba(254, 240, 138, 0.3);
     --link-color: #fef9c3;
     --particle-color: #eab308;
 }
-[data-theme="light"][data-palette="gold"] {
-    --panel-border: #854d0e;
-    --header-bg: linear-gradient(90deg, #a16207, #eab308);
+[data-theme="light"][data-palette="speed"] {
+    --panel-border: #a16207;
+    --header-bg: linear-gradient(90deg, #854d0e, #ca8a04);
     --header-text: #ffffff;
-    --server-border: #854d0e;
+    --server-border: #a16207;
     --link-color: #713f12;
 }
 
-/* 6. Sakura Pink (NOVO) */
-[data-palette="sakura"] {
-    --panel-border: #ec4899;
-    --panel-shadow: 0 0 40px rgba(236, 72, 153, 0.5);
-    --header-bg: linear-gradient(90deg, #f43f5e, #ec4899);
+/* 4. Galaxy (Roxo Cósmico) */
+[data-palette="galaxy"] {
+    --panel-border: #a855f7;
+    --panel-shadow: 0 0 40px rgba(168, 85, 247, 0.5);
+    --header-bg: linear-gradient(90deg, #4c1d95, #7e22ce);
     --header-text: #ffffff;
-    --server-border: #f472b6;
-    --server-shadow: 0 0 20px rgba(244, 114, 182, 0.4);
-    --link-color: #fce7f3;
-    --particle-color: #ec4899;
+    --server-border: #c084fc;
+    --server-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
+    --link-color: #e9d5ff;
+    --particle-color: #a855f7;
 }
-[data-theme="light"][data-palette="sakura"] {
-    --panel-border: #9d174d;
-    --header-bg: linear-gradient(90deg, #be123c, #ec4899);
-    --server-border: #9d174d;
-    --link-color: #9d174d;
+[data-theme="light"][data-palette="galaxy"] {
+    --panel-border: #6b21a8;
+    --header-bg: linear-gradient(90deg, #3b0764, #6b21a8);
+    --server-border: #7e22ce;
+    --link-color: #5b21b6;
 }
 
-/* 7. Forest Green (NOVO) */
-[data-palette="forest"] {
-    --panel-border: #22c55e;
-    --panel-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
-    --header-bg: linear-gradient(90deg, #14532d, #166534);
-    --header-text: #ffffff;
-    --server-border: #4ade80;
-    --server-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
-    --link-color: #bbf7d0;
-    --particle-color: #22c55e;
+/* 5. Lunar (Prata/Cinza Lunar) */
+[data-palette="lunar"] {
+    --panel-border: #94a3b8;
+    --panel-shadow: 0 0 40px rgba(148, 163, 184, 0.4);
+    --header-bg: linear-gradient(90deg, #334155, #64748b);
+    --header-text: #f8fafc;
+    --server-border: #cbd5e1;
+    --server-shadow: 0 0 20px rgba(203, 213, 225, 0.3);
+    --link-color: #f1f5f9;
+    --particle-color: #94a3b8;
 }
-[data-theme="light"][data-palette="forest"] {
-    --panel-border: #166534;
-    --header-bg: linear-gradient(90deg, #14532d, #15803d);
-    --server-border: #166534;
-    --link-color: #14532d;
+[data-theme="light"][data-palette="lunar"] {
+    --panel-border: #475569;
+    --header-bg: linear-gradient(90deg, #1e293b, #475569);
+    --server-border: #334155;
+    --link-color: #1e293b;
 }
 
-/* 8. Blood Red (NOVO) */
-[data-palette="blood"] {
+/* 6. Atena (Azul Grego/Dourado) */
+[data-palette="atena"] {
+    --panel-border: #0284c7;
+    --panel-shadow: 0 0 40px rgba(2, 132, 199, 0.5);
+    --header-bg: linear-gradient(90deg, #0369a1, #b45309);
+    --header-text: #ffffff;
+    --server-border: #f59e0b;
+    --server-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+    --link-color: #fef3c7;
+    --particle-color: #0284c7;
+}
+[data-theme="light"][data-palette="atena"] {
+    --panel-border: #0369a1;
+    --header-bg: linear-gradient(90deg, #1e3a8a, #78350f);
+    --server-border: #0284c7;
+    --link-color: #1d4ed8;
+}
+
+/* 7. Solar (Laranja Intenso) */
+[data-palette="solar"] {
+    --panel-border: #f97316;
+    --panel-shadow: 0 0 40px rgba(249, 115, 22, 0.5);
+    --header-bg: linear-gradient(90deg, #ea580c, #facc15);
+    --header-text: #0a0f1a;
+    --server-border: #f97316;
+    --server-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+    --link-color: #ffedd5;
+    --particle-color: #f97316;
+}
+[data-theme="light"][data-palette="solar"] {
+    --panel-border: #c2410c;
+    --header-bg: linear-gradient(90deg, #9a3412, #ea580c);
+    --header-text: #ffffff;
+    --server-border: #c2410c;
+    --link-color: #9a3412;
+}
+
+/* 8. Venus (Verde Água/Menta) */
+[data-palette="venus"] {
+    --panel-border: #0d9488;
+    --panel-shadow: 0 0 40px rgba(13, 148, 136, 0.5);
+    --header-bg: linear-gradient(90deg, #115e59, #0d9488);
+    --header-text: #ccfbf1;
+    --server-border: #2dd4bf;
+    --server-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
+    --link-color: #e6fffa;
+    --particle-color: #0d9488;
+}
+[data-theme="light"][data-palette="venus"] {
+    --panel-border: #115e59;
+    --header-bg: linear-gradient(90deg, #134e4a, #14b8a6);
+    --header-text: #ffffff;
+    --server-border: #115e59;
+    --link-color: #115e59;
+}
+
+/* 9. Fire (Vermelho Fogo) */
+[data-palette="fire"] {
     --panel-border: #dc2626;
     --panel-shadow: 0 0 40px rgba(220, 38, 38, 0.5);
     --header-bg: linear-gradient(90deg, #7f1d1d, #dc2626);
@@ -185,11 +206,29 @@
     --link-color: #fee2e2;
     --particle-color: #dc2626;
 }
-[data-theme="light"][data-palette="blood"] {
+[data-theme="light"][data-palette="fire"] {
     --panel-border: #991b1b;
     --header-bg: linear-gradient(90deg, #7f1d1d, #b91c1c);
     --server-border: #991b1b;
     --link-color: #7f1d1d;
+}
+
+/* 10. Urano (Azul Glacial) */
+[data-palette="urano"] {
+    --panel-border: #06b6d4;
+    --panel-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
+    --header-bg: linear-gradient(90deg, #0f766e, #06b6d4);
+    --header-text: #ffffff;
+    --server-border: #22d3ee;
+    --server-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+    --link-color: #ecfeff;
+    --particle-color: #06b6d4;
+}
+[data-theme="light"][data-palette="urano"] {
+    --panel-border: #0891b2;
+    --header-bg: linear-gradient(90deg, #164e63, #06b6d4);
+    --server-border: #0891b2;
+    --link-color: #0891b2;
 }
 
 * {
@@ -331,7 +370,7 @@ input:checked + .slider::before { opacity: 0.4; }
 }
 .gear-btn:hover { transform: rotate(45deg); }
 
-/* MENU FLUTUANTE DE CORES (Suporta rolagem interna se a tela for pequena) */
+/* MENU FLUTUANTE DE CORES COM ROLAGEM INTELIGENTE */
 .color-panel {
     display: none;
     position: absolute;
@@ -345,7 +384,7 @@ input:checked + .slider::before { opacity: 0.4; }
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     gap: 8px;
     flex-direction: column;
-    width: 180px;
+    width: 190px;
     max-height: 380px;
     overflow-y: auto;
 }
@@ -365,7 +404,7 @@ input:checked + .slider::before { opacity: 0.4; }
 .color-opt:hover { background: rgba(255,255,255,0.15); }
 .circle-preview { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 
-/* Barra de rolagem customizada para o menu de cores */
+/* Scrollbar Customizado */
 .color-panel::-webkit-scrollbar { width: 4px; }
 .color-panel::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 10px; }
 
@@ -494,29 +533,35 @@ input:checked + .slider::before { opacity: 0.4; }
             <div class="color-opt" onclick="setPalette('default')">
                 <div class="circle-preview" style="background:#16f09e;"></div> Verde Padrão
             </div>
-            <div class="color-opt" onclick="setPalette('cyberpunk')">
-                <div class="circle-preview" style="background:#ff007f;"></div> Cyber Punk
+            <div class="color-opt" onclick="setPalette('seven')">
+                <div class="circle-preview" style="background:#3b82f6;"></div> 🧿 Seven
             </div>
-            <div class="color-opt" onclick="setPalette('inferno')">
-                <div class="circle-preview" style="background:#f97316;"></div> Inferno Orange
+            <div class="color-opt" onclick="setPalette('explosion')">
+                <div class="circle-preview" style="background:#facc15;"></div> 💣 Explosion
             </div>
-            <div class="color-opt" onclick="setPalette('ocean')">
-                <div class="circle-preview" style="background:#06b6d4;"></div> Deep Ocean
+            <div class="color-opt" onclick="setPalette('speed')">
+                <div class="circle-preview" style="background:#eab308;"></div> ⚡ Speed
             </div>
-            <div class="color-opt" onclick="setPalette('purple')">
-                <div class="circle-preview" style="background:#a855f7;"></div> Purple Neon
+            <div class="color-opt" onclick="setPalette('galaxy')">
+                <div class="circle-preview" style="background:#a855f7;"></div> 🛸 Galaxy
             </div>
-            <div class="color-opt" onclick="setPalette('gold')">
-                <div class="circle-preview" style="background:#eab308;"></div> Gold Luxury
+            <div class="color-opt" onclick="setPalette('lunar')">
+                <div class="circle-preview" style="background:#94a3b8;"></div> 🌑 Lunar
             </div>
-            <div class="color-opt" onclick="setPalette('sakura')">
-                <div class="circle-preview" style="background:#ec4899;"></div> Sakura Pink
+            <div class="color-opt" onclick="setPalette('atena')">
+                <div class="circle-preview" style="background:#0284c7;"></div> 🏛️ Atena
             </div>
-            <div class="color-opt" onclick="setPalette('forest')">
-                <div class="circle-preview" style="background:#22c55e;"></div> Forest Green
+            <div class="color-opt" onclick="setPalette('solar')">
+                <div class="circle-preview" style="background:#f97316;"></div> ☀️ Solar
             </div>
-            <div class="color-opt" onclick="setPalette('blood')">
-                <div class="circle-preview" style="background:#dc2626;"></div> Blood Red
+            <div class="color-opt" onclick="setPalette('venus')">
+                <div class="circle-preview" style="background:#0d9488;"></div> 🌬️ Venus
+            </div>
+            <div class="color-opt" onclick="setPalette('fire')">
+                <div class="circle-preview" style="background:#dc2626;"></div> 🔥 Fire
+            </div>
+            <div class="color-opt" onclick="setPalette('urano')">
+                <div class="circle-preview" style="background:#06b6d4;"></div> 🪐 Urano
             </div>
         </div>
     </div>
@@ -531,9 +576,9 @@ input:checked + .slider::before { opacity: 0.4; }
 </div>
 
 <script>
-// EXECUTAR AO CARREGAR A PÁGINA: Recupera o Tema E a Paleta de Cores salvos
+// Carrega o estado do Tema e da Paleta salvos ao carregar a página
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Carrega o tema (Light / Dark)
+    // 1. Carrega tema
     const savedTheme = localStorage.getItem("app-theme");
     const themeChk = document.getElementById("theme-toggle-chk");
     if (savedTheme === "light") {
@@ -544,7 +589,7 @@ document.addEventListener("DOMContentLoaded", () => {
         themeChk.checked = false;
     }
 
-    // 2. Carrega a Paleta de Cores
+    // 2. Carrega paleta
     const savedPalette = localStorage.getItem("app-palette");
     if (savedPalette && savedPalette !== "default") {
         document.documentElement.setAttribute("data-palette", savedPalette);
