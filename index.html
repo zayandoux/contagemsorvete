@@ -3,31 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M3U Hub | Command Center</title>
+<title>M3U Hub | Matrix Control</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* Sistema de Cores */
+/* Sistema de Cores Industriais/Analógicas */
 :root {
-    --bg-main: #09090b;
-    --bg-surface: #18181b;
-    --border: rgba(255, 255, 255, 0.08);
-    --text-main: #f4f4f5;
-    --text-muted: #71717a;
-    --accent: #f97316;
-    --accent-hover: #ea580c;
-    --grid-columns: repeat(3, 1fr);
+    --bg-main: #0f1115;
+    --bg-panel: #161920;
+    --bg-block: #1e222b;
+    --border: #2a2f3d;
+    --text-main: #f8fafc;
+    --text-muted: #64748b;
+    --accent: #2563eb; /* Azul Elétrico/Técnico */
+    --accent-hover: #1d4ed8;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --switch-bg: #334155;
 }
 
 [data-theme="light"] {
-    --bg-main: #fafafa;
-    --bg-surface: #ffffff;
-    --border: rgba(0, 0, 0, 0.08);
-    --text-main: #09090b;
-    --text-muted: #a1a1aa;
-    --accent: #ea580c;
-    --accent-hover: #c2410c;
+    --bg-main: #f1f5f9;
+    --bg-panel: #ffffff;
+    --bg-block: #f8fafc;
+    --border: #cbd5e1;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --shadow: rgba(0, 0, 0, 0.05);
+    --switch-bg: #e2e8f0;
 }
 
 * {
@@ -35,7 +40,7 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
     margin: 0;
     padding: 0;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
 }
 
 body {
@@ -45,281 +50,314 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-x: hidden;
     padding: 40px 20px;
 }
 
-/* Container Centralizador Fluido */
-.app-container {
+/* Console Rack Central */
+.matrix-rack {
     width: 100%;
-    max-width: 900px;
+    max-width: 960px;
+    background-color: var(--bg-panel);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 25px 50px -12px var(--shadow);
+}
+
+/* Cabeçalho do Console */
+.rack-header {
     display: flex;
-    flex-direction: column;
-    gap: 30px;
+    justify-content: space-between;
     align-items: center;
+    border-bottom: 2px dashed var(--border);
+    padding-bottom: 25px;
+    margin-bottom: 30px;
 }
 
-/* --- INTERRUPTOR DE TEMA (Flutuante no topo direito) --- */
-.theme-switch-wrapper {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    z-index: 100;
+.rack-title h2 {
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.rack-title p {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
 }
 
+/* Interruptor Minimalista Lua/Sol */
 .theme-switch {
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 26px;
+    width: 54px;
+    height: 28px;
 }
 .theme-switch input { opacity: 0; width: 0; height: 0; }
-
 .slider {
     position: absolute;
     cursor: pointer;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border);
+    background-color: var(--switch-bg);
     transition: 0.3s;
-    border-radius: 26px;
+    border-radius: 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 5px;
+    padding: 0 6px;
 }
-.slider::before { content: "🌙"; font-size: 11px; order: 2; }
-.slider::after { content: "☀️"; font-size: 11px; order: 1; opacity: 0.3; }
-
+.slider::before { content: "🌙"; font-size: 12px; order: 2; }
+.slider::after { content: "☀️"; font-size: 12px; order: 1; opacity: 0.3; }
 .knob {
     position: absolute;
-    height: 20px;
-    width: 20px;
-    left: 2px;
-    bottom: 2px;
-    background-color: var(--text-main);
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
     transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 50%;
     z-index: 2;
 }
-input:checked + .slider { background-color: var(--accent); border-color: transparent; }
-input:checked + .slider .knob { transform: translateX(24px); background-color: #fff; }
+input:checked + .slider { background-color: var(--accent); }
+input:checked + .slider .knob { transform: translateX(26px); }
 input:checked + .slider::before { opacity: 0.3; }
 input:checked + .slider::after { opacity: 1; }
 
-
-/* --- BARRA DE INPUT GIGANTE (ESTILO RAYCAST) --- */
-.search-box-wrapper {
-    width: 100%;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 10px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+/* Bloco Superior de Parâmetros (Inputs) */
+.parameter-bar {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+    gap: 15px;
+    margin-bottom: 35px;
+    background-color: var(--bg-block);
+    padding: 15px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
 }
 
-/* Quando os resultados aparecem, a barra ganha um destaque sutil */
-.search-box-wrapper.active {
-    transform: translateY(-5px);
+.param-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.param-field label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+}
+
+.param-field input {
+    background-color: var(--bg-main);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+}
+.param-field input:focus {
     border-color: var(--accent);
 }
 
-.inputs-inline {
-    display: flex;
-    flex: 1;
-    gap: 8px;
-}
-
-.inputs-inline input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    padding: 16px;
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--text-main);
-}
-
-.inputs-inline input::placeholder {
-    color: var(--text-muted);
-}
-
-/* Divisor sutil entre Usuário e Senha dentro do input */
-.input-divider {
-    width: 1px;
-    background-color: var(--border);
-    margin: 12px 0;
-}
-
-.btn-trigger {
+.btn-connect {
+    align-self: flex-end;
+    height: 45px;
+    padding: 0 30px;
     background-color: var(--accent);
     color: white;
     border: none;
-    padding: 14px 28px;
-    border-radius: 14px;
-    font-size: 15px;
-    font-weight: 600;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    white-space: nowrap;
 }
-.btn-trigger:hover { background-color: var(--accent-hover); }
+.btn-connect:hover {
+    background-color: var(--accent-hover);
+}
 
-
-/* --- GRID DE RESULTADOS (A EXPLOSÃO VISUAL) --- */
-.results-grid {
+/* Malha/Matriz de Portas dos Servidores */
+.matrix-grid {
     display: grid;
-    grid-template-columns: var(--grid-columns);
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-    width: 100%;
-    opacity: 0;
-    transform: translateY(20px);
-    pointer-events: none;
-    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Classe ativada via JS para fazer a expansão acontecer */
-.results-grid.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-/* Cards Compactos da Grade */
-.server-card {
-    background-color: var(--bg-surface);
+/* Módulo Desconectado/Inativo por padrão */
+.matrix-node {
+    background-color: var(--bg-block);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
+    border-radius: 12px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 16px;
-    position: relative;
-    overflow: hidden;
-}
-.server-card:hover {
-    border-color: var(--text-muted);
+    gap: 12px;
+    opacity: 0.6; /* Efeito apagado antes de gerar */
 }
 
-.card-header-block {
+/* Ativado via JS após o clique */
+.matrix-node.online {
+    opacity: 1;
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.1);
+}
+
+.node-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
 }
 
-.status-dot {
-    width: 7px;
-    height: 7px;
+.node-title {
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Indicador que muda de cor conforme o estado */
+.node-led {
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background-color: #22c55e;
+    background-color: #475569; /* Led apagado */
+    transition: background-color 0.3s;
+}
+.matrix-node.online .node-led {
+    background-color: #22c55e; /* Led verde online */
+    box-shadow: 0 0 8px #22c55e;
 }
 
-.server-title {
-    font-weight: 600;
-    font-size: 15px;
-}
-
-.server-url-short {
+.node-link-preview {
     font-size: 12px;
     color: var(--text-muted);
     background-color: var(--bg-main);
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: 6px 10px;
+    border-radius: 6px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     border: 1px solid var(--border);
 }
 
-.card-actions-row {
+.node-actions {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
 }
 
-.card-actions-row button {
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: 600;
+.node-actions button {
+    padding: 8px 0;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border-radius: 6px;
     cursor: pointer;
     border: 1px solid var(--border);
     background-color: var(--bg-main);
     color: var(--text-main);
 }
 
-.btn-m3u-prime {
+/* Desabilita cliques nos botões enquanto offline */
+.matrix-node:not(.online) .node-actions button {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.btn-m3u-action {
     background-color: var(--accent) !important;
     color: white !important;
     border: none !important;
 }
-.btn-m3u-prime:hover { background-color: var(--accent-hover) !important; }
+.btn-m3u-action:hover { background-color: var(--accent-hover) !important; }
 
-.card-actions-row button.copied {
+.node-actions button.copied {
     background-color: #22c55e !important;
     color: white !important;
     border: none !important;
 }
 
-/* Responsividade de Grade */
-@media(max-width: 900px) { :root { var(--grid-columns): repeat(2, 1fr); } }
-@media(max-width: 600px) {
-    :root { var(--grid-columns): repeat(1, 1fr); }
-    .search-box-wrapper { flex-direction: column; padding: 16px; }
-    .inputs-inline { flex-direction: column; width: 100%; gap: 0; }
-    .input-divider { height: 1px; width: 100%; margin: 8px 0; }
-    .btn-trigger { width: 100%; }
+@media(max-width: 900px) { .matrix-grid { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width: 640px) {
+    .matrix-grid { grid-template-columns: 1fr; }
+    .parameter-bar { flex-direction: column; }
+    .btn-connect { width: 100%; }
 }
 </style>
 </head>
 <body>
 
-<!-- Interruptor de Tema de Canto -->
-<div class="theme-switch-wrapper">
-    <label class="theme-switch">
-        <input type="checkbox" id="theme-toggle-chk" onchange="toggleTheme()">
-        <div class="slider"><span class="knob"></span></div>
-    </label>
-</div>
-
-<div class="app-container">
-
-    <!-- Caixa de Comando Principal -->
-    <div class="search-box-wrapper" id="searchBox">
-        <div class="inputs-inline">
-            <input type="text" id="user" placeholder="Digite o usuário..." autocomplete="off">
-            <div class="input-divider"></div>
-            <input type="text" id="pass" placeholder="Digite a senha..." autocomplete="off">
+<div class="matrix-rack">
+    <div class="rack-header">
+        <div class="rack-title">
+            <h2>Matrix Connection Rack</h2>
+            <p>Terminal Central de Linkagem M3U</p>
         </div>
-        <button class="btn-trigger" onclick="dispararComando()">Executar</button>
+        <label class="theme-switch" title="Mudar Modo de Cor">
+            <input type="checkbox" id="theme-toggle-chk" onchange="toggleTheme()">
+            <div class="slider"><span class="knob"></span></div>
+        </label>
     </div>
 
-    <!-- Onde a Mágica Acontece: Grid Explodida -->
-    <div class="results-grid" id="gridDestino"></div>
+    <div class="parameter-bar">
+        <div class="param-field">
+            <label>Linha de Usuário</label>
+            <input type="text" id="user" placeholder="Acesso ID" autocomplete="off">
+        </div>
+        <div class="param-field">
+            <label>Chave de Segurança</label>
+            <input type="text" id="pass" placeholder="Password Token" autocomplete="off">
+        </div>
+        <button class="btn-connect" onclick="energizarMatriz()">Alimentar</button>
+    </div>
 
+    <div class="matrix-grid" id="matrixGrid"></div>
 </div>
 
 <script>
+// Dados brutos estáticos dos servidores
 const servidores = [
-    {nome:"🧿 Seven", url:"http://seven.blcplay.com"},
-    {nome:"💣 Explosion", url:"http://nsync.space"},
-    {nome:"⚡ Speed", url:"http://netuno.live"},
-    {nome:"🛸 Galaxy", url:"http://galaxy.blcplay.com"},
-    {nome:"🌑 Lunar", url:"http://lunar.kkrototv.fun"},
-    {nome:"🏛️ Atena", url:"http://atena.kkrototv.fun"},
-    {nome:"☀️ Solar", url:"http://solar.kkrototv.fun"},
-    {nome:"🌬️ Venus", url:"http://venus.blcplay.com"},
-    {nome:"🔥 Fire", url:"http://fire.kkrototv.fun"}
+    {nome:"Seven", url:"http://seven.blcplay.com"},
+    {nome:"Explosion", url:"http://nsync.space"},
+    {nome:"Speed", url:"http://netuno.live"},
+    {nome:"Galaxy", url:"http://galaxy.blcplay.com"},
+    {nome:"Lunar", url:"http://lunar.kkrototv.fun"},
+    {nome:"Atena", url:"http://atena.kkrototv.fun"},
+    {nome:"Solar", url:"http://solar.kkrototv.fun"},
+    {nome:"Venus", url:"http://venus.blcplay.com"},
+    {nome:"Fire", url:"http://fire.kkrototv.fun"}
 ];
 
-// Listener para disparar ao apertar Enter dentro de qualquer input
-document.getElementById('user').addEventListener('keydown', e => { if(e.key === 'Enter') dispararComando(); });
-document.getElementById('pass').addEventListener('keydown', e => { if(e.key === 'Enter') dispararComando(); });
+// Inicializa a malha física assim que a página abre (em estado offline)
+function renderizarMalhaInicial() {
+    let grid = document.getElementById("matrixGrid");
+    grid.innerHTML = "";
+
+    servidores.forEach((s, i) => {
+        let block = document.createElement("div");
+        block.className = "matrix-node";
+        block.id = `node-${i}`;
+        block.innerHTML = `
+            <div class="node-header">
+                <div class="node-title">// ${s.nome}</div>
+                <div class="node-led"></div>
+            </div>
+            <div class="node-link-preview" id="preview-${i}">http://.../get.php</div>
+            <div class="node-actions">
+                <button id="m3u-${i}" class="btn-m3u-action">M3U</button>
+                <button id="dns-${i}">DNS</button>
+            </div>
+        `;
+        grid.appendChild(block);
+    });
+}
 
 function toggleTheme() {
     const body = document.documentElement;
@@ -330,64 +368,44 @@ function toggleTheme() {
     }
 }
 
-function dispararComando() {
+// "Energiza" o painel e insere as URLs dinamicamente sem recriar os elementos do zero
+function energizarMatriz() {
     let user = document.getElementById("user").value.trim();
     let pass = document.getElementById("pass").value.trim();
-    let searchBox = document.getElementById("searchBox");
-    let gridDestino = document.getElementById("gridDestino");
 
     if (!user || !pass) {
-        alert("Por favor, preencha o usuário e a senha.");
+        alert("Erro de alimentação: Insira as credenciais.");
         return;
     }
 
-    // Limpa a grid para preparar a nova animação
-    gridDestino.innerHTML = "";
-    gridDestino.classList.remove("show");
-    searchBox.classList.remove("active");
+    servidores.forEach((s, i) => {
+        let node = document.getElementById(`node-${i}`);
+        let preview = document.getElementById(`preview-${i}`);
+        let linkCompleto = `${s.url}/get.php?username=${user}&password=${pass}&type=m3u_plus&output=mpegts`;
 
-    // Pequeno timeout mecânico para simular um processamento estético
-    setTimeout(() => {
-        searchBox.classList.add("active");
-        
-        servidores.forEach((s, i) => {
-            let link = `${s.url}/get.php?username=${user}&password=${pass}&type=m3u_plus&output=mpegts`;
-            
-            let card = document.createElement("div");
-            card.className = "server-card";
-            card.innerHTML = `
-                <div class="card-header-block">
-                    <div class="status-dot"></div>
-                    <div class="server-title">${s.nome}</div>
-                </div>
-                <div class="server-url-short">${link}</div>
-                <div class="card-actions-row">
-                    <button id="m3u${i}" class="btn-m3u-prime">Copiar M3U</button>
-                    <button id="dns${i}">DNS</button>
-                </div>
-            `;
-            gridDestino.appendChild(card);
+        // Ativa o visual e injeta os links
+        node.classList.add("online");
+        preview.innerText = linkCompleto;
 
-            // Ações de cópia personalizadas por ID único interno
-            document.getElementById(`m3u${i}`).onclick = function() {
-                navigator.clipboard.writeText(link);
-                this.innerText = "Copiado!";
-                this.classList.add("copied");
-                setTimeout(() => { this.innerText = "Copiar M3U"; this.classList.remove("copied"); }, 1500);
-            };
+        // Configura as ações de cópia dos botões agora ativos
+        document.getElementById(`m3u-${i}`).onclick = function() {
+            navigator.clipboard.writeText(linkCompleto);
+            this.innerText = "Copiado";
+            this.classList.add("copied");
+            setTimeout(() => { this.innerText = "M3U"; this.classList.remove("copied"); }, 1500);
+        };
 
-            document.getElementById(`dns${i}`).onclick = function() {
-                navigator.clipboard.writeText(s.url);
-                this.innerText = "Pronto!";
-                this.classList.add("copied");
-                setTimeout(() => { this.innerText = "DNS"; this.classList.remove("copied"); }, 1500);
-            };
-        });
-
-        // Mostra a grade expandindo suavemente
-        gridDestino.classList.add("show");
-    }, 200);
+        document.getElementById(`dns-${i}`).onclick = function() {
+            navigator.clipboard.writeText(s.url);
+            this.innerText = "Copiado";
+            this.classList.add("copied");
+            setTimeout(() => { this.innerText = "DNS"; this.classList.remove("copied"); }, 1500);
+        };
+    });
 }
+
+// Renderiza a estrutura assim que carregar
+renderizarMalhaInicial();
 </script>
 
 </body>
