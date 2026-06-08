@@ -65,7 +65,7 @@
     --link-color: #1e3a8a;
 }
 
-/* 2. Explosion (Corrigido contraste do botão) */
+/* 2. Explosion */
 [data-palette="explosion"] {
     --panel-border: #facc15;
     --panel-shadow: 0 0 40px rgba(250, 204, 21, 0.4);
@@ -249,7 +249,7 @@ body {
     min-height: 100vh;
 }
 
-/* Painel principal */
+/* Painel principal corrigido com overflow para prender a borda do header */
 .panel {
     position: relative;
     width: 100%;
@@ -259,6 +259,7 @@ body {
     border: 2px solid var(--panel-border);
     box-shadow: var(--panel-shadow);
     height: fit-content;
+    overflow: hidden; /* Mantém o cabeçalho desenhando o cantinho arredondado */
 }
 
 /* Partículas */
@@ -268,7 +269,6 @@ body {
     pointer-events: none;
     overflow: hidden;
     z-index: 0;
-    border-radius: 18px;
 }
 
 .particles span {
@@ -287,7 +287,7 @@ body {
     100% { transform: translateY(-600px) translateX(20px); opacity: 0; }
 }
 
-/* Cabeçalho */
+/* Cabeçalho Consertado com Arredondamento Perfeito */
 .header {
     position: relative;
     background: var(--header-bg);
@@ -302,13 +302,15 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
+    border-top-left-radius: 18px;  /* Força seguir a borda */
+    border-top-right-radius: 18px; /* Força seguir a borda */
 }
 
 /* Grupo de botões no lado direito */
 .header-controls {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
     flex-shrink: 0;
 }
 
@@ -356,20 +358,20 @@ input:checked + .slider .knob { transform: translateX(22px); background-color: #
 input:checked + .slider::after { opacity: 1; }
 input:checked + .slider::before { opacity: 0.4; }
 
-/* BOTÃO ENGRENAGEM */
-.gear-btn {
+/* BOTÃO LÁPIS SUBSTITUINDO A ENGRENAGEM */
+.theme-panel-btn {
     background: transparent;
     border: none;
     font-size: 20px;
     cursor: pointer;
-    transition: transform 0.3s;
+    transition: transform 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.gear-btn:hover { transform: rotate(45deg); }
+.theme-panel-btn:hover { transform: scale(1.15); }
 
-/* MENU FLUTUANTE DE CORES CORRIGIDO (Sempre na frente) */
+/* MENU FLUTUANTE DE CORES COM Z-INDEX MÁXIMO */
 .color-panel {
     display: none;
     position: absolute;
@@ -385,9 +387,7 @@ input:checked + .slider::before { opacity: 0.4; }
     width: 180px;
     max-height: 280px;
     overflow-y: auto;
-    
-    /* Z-INDEX ABSOLUTO PARA FICAR NA FRENTE DE TUDO */
-    z-index: 999999 !important; 
+    z-index: 999999 !important; /* Sempre à frente de tudo */
 }
 .color-panel.active { display: flex; }
 .color-opt {
@@ -511,6 +511,7 @@ input:checked + .slider::before { opacity: 0.4; }
 @media(max-width: 650px) {
     #resultado { grid-template-columns: 1fr; }
     .header { font-size: 18px; }
+    .color-panel { right: 50%; transform: translateX(50%); top: 65px; } /* Centraliza em telas mobile */
 }
 </style>
 </head>
@@ -522,7 +523,7 @@ input:checked + .slider::before { opacity: 0.4; }
         <span>Gerador de M3U</span>
         
         <div class="header-controls">
-            <button class="gear-btn" onclick="toggleColorPanel()" title="Painel de Temas">⚙️</button>
+            <button class="theme-panel-btn" onclick="toggleColorPanel()" title="Painel de Temas">✏️</button>
             <label class="theme-switch" title="Alternar Luz/Sombra">
                 <input type="checkbox" id="theme-toggle-chk" onchange="toggleTheme()">
                 <div class="slider">
@@ -651,7 +652,7 @@ function setPalette(name) {
 }
 
 window.onclick = function(event) {
-    if (!event.target.matches('.gear-btn') && !event.target.closest('.color-panel')) {
+    if (!event.target.matches('.theme-panel-btn') && !event.target.closest('.color-panel')) {
         document.getElementById("color-menu").classList.remove("active");
     }
 }
