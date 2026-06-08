@@ -37,7 +37,7 @@
     --switch-bg: #e7e5e4;
 }
 
-/* --- ADICIONANDO NOVAS PALETAS DE CORES PREMIUM --- */
+/* --- PALETAS DE CORES PREMIUM --- */
 
 /* Verde Esmeralda */
 [data-palette="emerald"] { --accent: #10b981; --accent-hover: #059669; }
@@ -96,7 +96,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative; /* Importante para guiar o menu absoluto */
+    position: relative;
 }
 
 .brand h2 {
@@ -110,14 +110,12 @@ body {
     margin-top: 2px;
 }
 
-/* Área de controles do topo */
 .header-controls {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-/* BOTÃO DO MENU DE TEMAS (LÁPIS) */
 .palette-trigger-btn {
     background: transparent;
     border: none;
@@ -132,7 +130,6 @@ body {
     transform: scale(1.15);
 }
 
-/* MENU FLUTUANTE DE PALETAS */
 .color-menu-panel {
     display: none;
     position: absolute;
@@ -173,7 +170,7 @@ body {
     flex-shrink: 0;
 }
 
-/* INTERRUPTOR PREMIUM (LUA/SOL) */
+/* INTERRUPTOR PREMIUM */
 .theme-switch {
     position: relative;
     display: inline-block;
@@ -228,21 +225,10 @@ body {
     z-index: 2;
 }
 
-input:checked + .slider {
-    background-color: var(--accent);
-}
-
-input:checked + .slider .knob {
-    transform: translateX(26px);
-}
-
-input:checked + .slider::before {
-    opacity: 0.3;
-}
-
-input:checked + .slider::after {
-    opacity: 1;
-}
+input:checked + .slider { background-color: var(--accent); }
+input:checked + .slider .knob { transform: translateX(26px); }
+input:checked + .slider::before { opacity: 0.3; }
+input:checked + .slider::after { opacity: 1; }
 
 /* Formulário Vertical */
 .form-container {
@@ -418,7 +404,6 @@ input:checked + .slider::after {
     font-size: 15px;
 }
 
-/* Scrollbars inteligentes */
 .main-content::-webkit-scrollbar { width: 6px; }
 .main-content::-webkit-scrollbar-thumb { background-color: var(--border); border-radius: 10px; }
 
@@ -440,7 +425,7 @@ input:checked + .slider::after {
     <div class="top-section">
         <div class="brand-wrapper">
             <div class="brand">
-                <h2>Gerador de M3U</h2>
+                <h2>M3U Hub Panel</h2>
                 <p>Gerenciador</p>
             </div>
             
@@ -508,7 +493,6 @@ input:checked + .slider::after {
 <script>
 // Carregamento inicial do Storage
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Recuperar Modo Claro/Escuro
     const savedTheme = localStorage.getItem("hub-theme");
     const themeChk = document.getElementById("theme-toggle-chk");
     if (savedTheme === "light") {
@@ -519,23 +503,26 @@ document.addEventListener("DOMContentLoaded", () => {
         themeChk.checked = false;
     }
 
-    // 2. Recuperar Paleta de Cores
     const savedPalette = localStorage.getItem("hub-palette");
     if (savedPalette && savedPalette !== "default") {
         document.documentElement.setAttribute("data-palette", savedPalette);
     }
 });
 
+// Nova lista exata com as 12 DNS atualizadas para o domínio .uinet1.shop
 const servidores = [
-    {nome:"🧿 Seven", url:"http://seven.blcplay.com"},
-    {nome:"💣 Explosion", url:"http://nsync.space"},
-    {nome:"⚡ Speed", url:"http://netuno.live"},
-    {nome:"🛸 Galaxy", url:"http://galaxy.blcplay.com"},
-    {nome:"🌑 Lunar", url:"http://lunar.kkrototv.fun"},
-    {nome:"🏛️ Atena", url:"http://atena.kkrototv.fun"},
-    {nome:"☀️ Solar", url:"http://solar.kkrototv.fun"},
-    {nome:"🌬️ Venus", url:"http://venus.blcplay.com"},
-    {nome:"🔥 Fire", url:"http://fire.kkrototv.fun"}
+    {nome:"Seven", url:"http://seven.uinet1.shop"},
+    {nome:"Speed", url:"http://speed.uinet1.shop"},
+    {nome:"Galaxy", url:"http://galaxy.uinet1.shop"},
+    {nome:"Lunar", url:"http://lunar.uinet1.shop"},
+    {nome:"Fire", url:"http://fire.uinet1.shop"},
+    {nome:"Andromeda", url:"http://andromeda.uinet1.shop"},
+    {nome:"Atena", url:"http://atena.uinet1.shop"},
+    {nome:"Hades", url:"http://hades.uinet1.shop"},
+    {nome:"Solar", url:"http://solar.uinet1.shop"},
+    {nome:"Tita", url:"http://tita.uinet1.shop"},
+    {nome:"Urano", url:"http://urano.uinet1.shop"},
+    {nome:"Venus", url:"http://venus.uinet1.shop"}
 ];
 
 function toggleTheme() {
@@ -567,7 +554,6 @@ function setPalette(name) {
     document.getElementById("palette-menu").classList.remove("active");
 }
 
-// Fechar menu se clicar fora dele
 window.onclick = function(event) {
     if (!event.target.matches('.palette-trigger-btn') && !event.target.closest('.color-menu-panel')) {
         document.getElementById("palette-menu").classList.remove("active");
