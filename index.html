@@ -27,7 +27,7 @@
     --switch-bg: rgba(10, 15, 26, 0.4);
 }
 
-/* Modificações do Modo Claro */
+/* Modificações do Modo Claro Geral */
 [data-theme="light"] {
     --bg-main: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
     --panel-bg: rgba(255, 255, 255, 0.95);
@@ -38,14 +38,16 @@
     --input-bg: #ffffff;
     --text-main: #1e293b;
     --server-bg: #ffffff;
-    --server-border: #10b981;
+    --server-border: #059669;
     --server-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     --link-color: #047857;
     --particle-color: #10b981;
     --switch-bg: rgba(255, 255, 255, 0.4);
 }
 
-/* Paletas Extras Selecionáveis */
+/* --- PALETAS EXTRAS --- */
+
+/* Cyber Punk (Escuro e Claro) */
 [data-palette="cyberpunk"] {
     --panel-border: #ff007f;
     --panel-shadow: 0 0 40px rgba(255, 0, 127, 0.5);
@@ -56,6 +58,14 @@
     --link-color: #bffffc;
     --particle-color: #ff007f;
 }
+[data-theme="light"][data-palette="cyberpunk"] {
+    --panel-border: #ff007f;
+    --header-bg: linear-gradient(90deg, #ff007f, #aa00ff);
+    --server-border: #d500f9;
+    --link-color: #7b1fa2;
+}
+
+/* Inferno (Escuro e Claro) */
 [data-palette="inferno"] {
     --panel-border: #f97316;
     --panel-shadow: 0 0 40px rgba(249, 115, 22, 0.5);
@@ -66,6 +76,14 @@
     --link-color: #fef08a;
     --particle-color: #f97316;
 }
+[data-theme="light"][data-palette="inferno"] {
+    --panel-border: #e65100;
+    --header-bg: linear-gradient(90deg, #d84315, #ff8f00);
+    --server-border: #e65100;
+    --link-color: #bf360c;
+}
+
+/* Deep Ocean (Escuro e Claro) */
 [data-palette="ocean"] {
     --panel-border: #06b6d4;
     --panel-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
@@ -75,6 +93,12 @@
     --server-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
     --link-color: #bae6fd;
     --particle-color: #06b6d4;
+}
+[data-theme="light"][data-palette="ocean"] {
+    --panel-border: #006064;
+    --header-bg: linear-gradient(90deg, #01579b, #006064);
+    --server-border: #0277bd;
+    --link-color: #01579b;
 }
 
 * {
@@ -202,7 +226,7 @@ input:checked + .slider .knob { transform: translateX(22px); background-color: #
 input:checked + .slider::after { opacity: 1; }
 input:checked + .slider::before { opacity: 0.4; }
 
-/* BOTÃO ENGRENAGEM NO CANTO DIREITO JUNTO COM SWITCH */
+/* BOTÃO ENGRENAGEM */
 .gear-btn {
     background: transparent;
     border: none;
@@ -216,7 +240,7 @@ input:checked + .slider::before { opacity: 0.4; }
 }
 .gear-btn:hover { transform: rotate(45deg); }
 
-/* MENU FLUTUANTE DE CORES - ALINHADO À DIREITA AGORA */
+/* MENU FLUTUANTE DE CORES */
 .color-panel {
     display: none;
     position: absolute;
@@ -312,11 +336,12 @@ input:checked + .slider::before { opacity: 0.4; }
     box-shadow: var(--server-shadow);
 }
 
+/* CORRIGIDO: Agora a barra de energia acompanha dinamicamente a cor do tema/paleta */
 .energy-bar {
     height: 5px;
     width: 100%;
     border-radius: 5px;
-    background: linear-gradient(270deg, #0fffa3, #22ff9e, #0fffa3);
+    background: linear-gradient(270deg, var(--panel-border), var(--server-border), var(--panel-border));
     background-size: 200% 100%;
     margin-bottom: 10px;
     animation: wave 4s linear infinite;
@@ -341,8 +366,10 @@ input:checked + .slider::before { opacity: 0.4; }
 
 .copy { background: #3b82f6; color: #fff; }
 .copy.copiado { background: #22ff9e; color: #0a0f1a; }
+[data-theme="light"] .copy.copiado { background: #10b981; color: #fff; }
 .dns { background: #f97316; color: #fff; }
 .dns.copiado { background: #22ff9e; color: #0a0f1a; }
+[data-theme="light"] .dns.copiado { background: #10b981; color: #fff; }
 .testar { background: #475569; color: #fff; font-size:16px; width:36px; }
 
 @media(max-width: 650px){
@@ -393,7 +420,7 @@ input:checked + .slider::before { opacity: 0.4; }
 </div>
 
 <script>
-// EXECUTAR AO CARREGAR A PÁGINA: Recupera apenas o estado do Tema (light ou dark) do LocalStorage
+// Recupera o estado do Tema (light ou dark) do LocalStorage
 document.addEventListener("DOMContentLoaded", () => {
     const savedTheme = localStorage.getItem("app-theme");
     const themeChk = document.getElementById("theme-toggle-chk");
@@ -439,10 +466,10 @@ function toggleTheme() {
     const isChecked = document.getElementById("theme-toggle-chk").checked;
     if (isChecked) {
         body.setAttribute("data-theme", "light");
-        localStorage.setItem("app-theme", "light"); // Salva preferência
+        localStorage.setItem("app-theme", "light");
     } else {
         body.removeAttribute("data-theme");
-        localStorage.setItem("app-theme", "dark");  // Salva preferência
+        localStorage.setItem("app-theme", "dark");
     }
 }
 
@@ -460,7 +487,6 @@ function setPalette(name) {
     document.getElementById("color-menu").classList.remove("active");
 }
 
-// Fecha o painel de cores ao clicar fora dele
 window.onclick = function(event) {
     if (!event.target.matches('.gear-btn') && !event.target.closest('.color-panel')) {
         document.getElementById("color-menu").classList.remove("active");
