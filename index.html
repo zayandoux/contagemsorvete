@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-/* Variáveis de Cores para suportar os dois Temas */
+/* Variáveis de Cores - Temas Dinâmicos */
 :root {
     --bg-main: radial-gradient(circle at center, #0a0f1a 0%, #000000 100%);
     --panel-bg: rgba(15, 19, 32, 0.95);
@@ -27,6 +27,7 @@
     --switch-bg: rgba(10, 15, 26, 0.4);
 }
 
+/* Modificações do Modo Claro */
 [data-theme="light"] {
     --bg-main: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
     --panel-bg: rgba(255, 255, 255, 0.95);
@@ -42,6 +43,38 @@
     --link-color: #047857;
     --particle-color: #10b981;
     --switch-bg: rgba(255, 255, 255, 0.4);
+}
+
+/* Paletas Extras Selecionáveis */
+[data-palette="cyberpunk"] {
+    --panel-border: #ff007f;
+    --panel-shadow: 0 0 40px rgba(255, 0, 127, 0.5);
+    --header-bg: linear-gradient(90deg, #ff007f, #390099);
+    --header-text: #ffffff;
+    --server-border: #00f0ff;
+    --server-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    --link-color: #bffffc;
+    --particle-color: #ff007f;
+}
+[data-palette="inferno"] {
+    --panel-border: #f97316;
+    --panel-shadow: 0 0 40px rgba(249, 115, 22, 0.5);
+    --header-bg: linear-gradient(90deg, #ef4444, #f97316);
+    --header-text: #ffffff;
+    --server-border: #facc15;
+    --server-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+    --link-color: #fef08a;
+    --particle-color: #f97316;
+}
+[data-palette="ocean"] {
+    --panel-border: #06b6d4;
+    --panel-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
+    --header-bg: linear-gradient(90deg, #0284c7, #06b6d4);
+    --header-text: #ffffff;
+    --server-border: #38bdf8;
+    --server-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    --link-color: #bae6fd;
+    --particle-color: #06b6d4;
 }
 
 * {
@@ -75,7 +108,7 @@ body {
     height: fit-content;
 }
 
-/* Partículas animadas */
+/* Partículas */
 .particles {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -116,22 +149,20 @@ body {
     align-items: center;
 }
 
-/* CONTAINER DO SINALIZADOR SOL/LUA - FIXADO SEM ESTICAR */
+/* INTERRUPTOR MINI NO CANTO SUPERIOR DIREITO */
 .theme-switch {
     position: absolute;
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
     display: block;
-    width: 46px; /* Tamanho horizontal fixo e elegante */
-    height: 24px; /* Tamanho vertical fixo e elegante */
+    width: 46px;
+    height: 24px;
     cursor: pointer;
     z-index: 10;
 }
 
-.theme-switch input { 
-    display: none; /* Esconde o checkbox real nativo */
-}
+.theme-switch input { display: none; }
 
 .slider {
     position: absolute;
@@ -146,18 +177,8 @@ body {
     padding: 0 4px;
 }
 
-.slider::before {
-    content: "🌙";
-    font-size: 10px;
-    order: 2;
-}
-
-.slider::after {
-    content: "☀️";
-    font-size: 10px;
-    order: 1;
-    opacity: 0.4;
-}
+.slider::before { content: "🌙"; font-size: 10px; order: 2; }
+.slider::after { content: "☀️"; font-size: 10px; order: 1; opacity: 0.4; }
 
 .knob {
     position: absolute;
@@ -172,23 +193,56 @@ body {
     z-index: 5;
 }
 
-/* Comportamentos ao clicar (Modo Claro) */
-input:checked + .slider {
-    background-color: rgba(255, 255, 255, 0.4);
-}
+input:checked + .slider { background-color: rgba(255, 255, 255, 0.4); }
+input:checked + .slider .knob { transform: translateX(22px); background-color: #0a0f1a; }
+input:checked + .slider::after { opacity: 1; }
+input:checked + .slider::before { opacity: 0.4; }
 
-input:checked + .slider .knob {
-    transform: translateX(22px); /* Deslocamento milimétrico perfeito */
-    background-color: #0a0f1a;
+/* BOTÃO ENGRENAGEM DO PAINEL DE CORES */
+.gear-btn {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.3s;
 }
+.gear-btn:hover { transform: translateY(-50%) rotate(45deg); }
 
-input:checked + .slider::after {
-    opacity: 1;
+/* MENU FLUTUANTE DE CORES */
+.color-panel {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    background: rgba(15, 19, 32, 0.98);
+    border: 1px solid var(--panel-border);
+    padding: 12px;
+    border-radius: 12px;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    gap: 8px;
+    flex-direction: column;
 }
-
-input:checked + .slider::before {
-    opacity: 0.4;
+.color-panel.active { display: flex; }
+.color-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.05);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
 }
+.color-opt:hover { background: rgba(255,255,255,0.15); }
+.circle-preview { width: 12px; height: 12px; border-radius: 50%; }
 
 /* Login */
 .login {
@@ -230,10 +284,7 @@ input:checked + .slider::before {
     box-shadow: 0 0 15px rgba(34, 255, 150, 0.4);
     transition: transform 0.2s;
 }
-
-.login button:hover {
-    transform: translateY(-2px);
-}
+.login button:hover { transform: translateY(-2px); }
 
 /* Grid de resultados */
 #resultado {
@@ -245,7 +296,6 @@ input:checked + .slider::before {
     z-index: 1;
 }
 
-/* Cards dos servidores */
 .server {
     position: relative;
     background: var(--server-bg);
@@ -258,7 +308,6 @@ input:checked + .slider::before {
     box-shadow: var(--server-shadow);
 }
 
-/* Barra de energia contínua */
 .energy-bar {
     height: 5px;
     width: 100%;
@@ -282,30 +331,10 @@ input:checked + .slider::before {
     margin-bottom: 10px;
 }
 
-.server-link {
-    font-size: 12px;
-    word-break: break-all;
-    color: var(--link-color);
-    margin-bottom: 12px;
-}
+.server-link { font-size: 12px; word-break: break-all; color: var(--link-color); margin-bottom: 12px; }
+.actions { display: flex; gap: 10px; }
+.actions button { flex: 1; padding: 10px 0; border-radius: 10px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; text-transform: uppercase; }
 
-.actions {
-    display: flex;
-    gap: 10px;
-}
-
-.actions button {
-    flex: 1;
-    padding: 10px 0;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    text-transform: uppercase;
-}
-
-/* Botões estáticos */
 .copy { background: #3b82f6; color: #fff; }
 .copy.copiado { background: #22ff9e; color: #0a0f1a; }
 .dns { background: #f97316; color: #fff; }
@@ -314,7 +343,9 @@ input:checked + .slider::before {
 
 @media(max-width: 650px){
     #resultado { grid-template-columns: 1fr; }
-    .theme-switch { position: relative; right: auto; top: auto; transform: none; margin-top: 15px; }
+    .theme-switch { position: relative; right: auto; top: auto; transform: none; margin-top: 10px; }
+    .gear-btn { position: relative; left: auto; top: auto; transform: none; margin-top: 5px; }
+    .color-panel { left: 50%; transform: translateX(-50%); top: 110px; }
     .header { flex-direction: column; padding: 20px; font-size: 24px; }
 }
 </style>
@@ -324,13 +355,29 @@ input:checked + .slider::before {
 <div class="panel">
     <div class="particles" id="particles"></div>
     <div class="header">
+        <button class="gear-btn" onclick="toggleColorPanel()" title="Painel de Temas">⚙️</button>
         <span>Gerador de M3U</span>
-        <label class="theme-switch" title="Alternar Tema">
+        <label class="theme-switch" title="Alternar Luz/Sombra">
             <input type="checkbox" id="theme-toggle-chk" onchange="toggleTheme()">
             <div class="slider">
                 <span class="knob"></span>
             </div>
         </label>
+
+        <div class="color-panel" id="color-menu">
+            <div class="color-opt" onclick="setPalette('default')">
+                <div class="circle-preview" style="background:#16f09e;"></div> Verde Padrão
+            </div>
+            <div class="color-opt" onclick="setPalette('cyberpunk')">
+                <div class="circle-preview" style="background:#ff007f;"></div> Cyber Punk
+            </div>
+            <div class="color-opt" onclick="setPalette('inferno')">
+                <div class="circle-preview" style="background:#f97316;"></div> Inferno Orange
+            </div>
+            <div class="color-opt" onclick="setPalette('ocean')">
+                <div class="circle-preview" style="background:#06b6d4;"></div> Deep Ocean
+            </div>
+        </div>
     </div>
 
     <div class="login">
@@ -373,11 +420,31 @@ const servidores = [
 function toggleTheme() {
     const body = document.documentElement;
     const isChecked = document.getElementById("theme-toggle-chk").checked;
-
     if (isChecked) {
         body.setAttribute("data-theme", "light");
     } else {
         body.removeAttribute("data-theme");
+    }
+}
+
+function toggleColorPanel() {
+    document.getElementById("color-menu").classList.toggle("active");
+}
+
+function setPalette(name) {
+    const body = document.documentElement;
+    if (name === 'default') {
+        body.removeAttribute("data-palette");
+    } else {
+        body.setAttribute("data-palette", name);
+    }
+    document.getElementById("color-menu").classList.remove("active");
+}
+
+// Fecha o painel de cores ao clicar fora dele
+window.onclick = function(event) {
+    if (!event.target.matches('.gear-btn') && !event.target.closest('.color-panel')) {
+        document.getElementById("color-menu").classList.remove("active");
     }
 }
 
