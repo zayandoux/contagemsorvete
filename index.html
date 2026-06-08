@@ -3,319 +3,318 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M3U Hub | Mario World Edition</title>
+<title>Gerador de M3U</title>
 
-<!-- Fonte Pixelada do Google Fonts para dar o clima retro definitivo -->
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-/* Paleta de Cores Clássica do Super Mario World */
+/* Variáveis de Cores para suportar os dois Temas */
 :root {
-    --bg-sky: #5c94fc; /* Azul clássico do céu do Mario */
-    --border-pixel: #000000;
-    --box-yellow: #fcd8a0;
-    --box-yellow-dark: #f8b800;
-    --text-dark: #000000;
-    --text-light: #ffffff;
-    --btn-green: #00a800;
-    --btn-green-hover: #008800;
-    --accent-red: #f83800;
+    --bg-main: radial-gradient(circle at center, #0a0f1a 0%, #000000 100%);
+    --panel-bg: rgba(15, 19, 32, 0.95);
+    --panel-border: #16f09e;
+    --panel-shadow: 0 0 50px rgba(34, 255, 150, 0.6), 0 0 30px rgba(59, 130, 246, 0.3);
+    --header-bg: linear-gradient(90deg, #0fffa3, #22c55e);
+    --header-text: #0a0f1a;
+    --input-bg: #0f1320;
+    --text-main: #e0e0e0;
+    --server-bg: rgba(10, 15, 26, 0.95);
+    --server-border: #22ff9e;
+    --server-shadow: 0 0 20px rgba(34, 255, 150, 0.5), 0 0 15px rgba(59, 130, 246, 0.3);
+    --link-color: #c0f9de;
+    --particle-color: #22ff9e;
 }
 
 [data-theme="light"] {
-    /* Mantendo o tema divertido, mudamos o fundo para a grama/fase terrestre */
-    --bg-sky: #70c040; 
-}
-
-* {
-    box-sizing: border-box;
-    font-family: 'Press Start 2P', cursive; /* Aplica a fonte pixelada */
-    margin: 0;
-    padding: 0;
+    --bg-main: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    --panel-bg: rgba(255, 255, 255, 0.95);
+    --panel-border: #22c55e;
+    --panel-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --header-bg: linear-gradient(90deg, #10b981, #059669);
+    --header-text: #ffffff;
+    --input-bg: #ffffff;
+    --text-main: #1e293b;
+    --server-bg: #ffffff;
+    --server-border: #10b981;
+    --server-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    --link-color: #047857;
+    --particle-color: #10b981;
 }
 
 body {
-    background-color: var(--bg-sky);
-    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+    background: var(--bg-main);
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    overflow-x: hidden;
     min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Painel principal */
+.panel {
+    position: relative;
+    width: 100%;
+    max-width: 750px;
+    background: var(--panel-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid var(--panel-border);
+    box-shadow: var(--panel-shadow);
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Partículas animadas */
+.particles {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.particles span {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--particle-color);
+    opacity: 0.3;
+    border-radius: 50%;
+    animation: floatParticles linear infinite;
+}
+
+@keyframes floatParticles {
+    0% { transform: translateY(0) translateX(0); opacity: 0.3; }
+    50% { opacity: 0.6; }
+    100% { transform: translateY(-600px) translateX(20px); opacity: 0; }
+}
+
+/* Cabeçalho */
+.header {
+    position: relative;
+    background: var(--header-bg);
+    color: var(--header-text);
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    padding: 25px;
+    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+}
+
+/* Botão de Alternar Tema no Cabeçalho */
+.theme-btn {
+    position: absolute;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: currentColor;
+    padding: 8px 12px;
+    border-radius: 8px;
     font-size: 12px;
-    image-rendering: pixelated; /* Evita que bordas e sombras fiquem borradas */
-}
-
-/* Container principal estilo Caixa de Diálogo/Menu de Fase */
-.mario-container {
-    width: 100%;
-    max-width: 900px;
-    background-color: #ffffff;
-    border: 6px solid var(--border-pixel);
-    border-radius: 0px; /* Jogos antigos não tinham cantos arredondados fluidos! */
-    box-shadow: 12px 12px 0px rgba(0, 0, 0, 0.3);
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-/* Cabeçalho superior com placar (HUD) */
-.mario-hud {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 6px dashed var(--border-pixel);
-    padding-bottom: 20px;
-}
-
-.hud-title h1 {
-    font-size: 16px;
-    color: var(--accent-red);
-    text-shadow: 2px 2px 0px #000;
-    margin-bottom: 8px;
-}
-
-.hud-title p {
-    font-size: 9px;
-    color: #555;
-}
-
-/* Interruptor de Tema Estilo Botão ON/OFF antigo */
-.theme-switch-btn {
-    background-color: var(--box-yellow);
-    border: 4px solid var(--border-pixel);
-    padding: 8px 12px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 8px;
-    font-weight: bold;
-    box-shadow: 4px 4px 0px #000;
+    font-family: 'Roboto', sans-serif;
+    transition: background 0.2s;
 }
-.theme-switch-btn:active {
-    box-shadow: 0px 0px 0px #000;
-    transform: translate(4px, 4px);
+.theme-btn:hover {
+    background: rgba(0, 0, 0, 0.3);
 }
 
-/* Bloco de Inputs (Parece o bloco de itens de texto do inventário) */
-.control-pad {
-    background-color: #f8f8f8;
-    border: 4px solid var(--border-pixel);
-    padding: 20px;
+/* Login */
+.login {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: flex-end;
-}
-
-.pad-field {
-    flex: 1;
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.pad-field label {
-    font-size: 10px;
-    color: var(--text-dark);
-}
-
-.pad-field input {
-    border: 4px solid var(--border-pixel);
-    background-color: #ffffff;
-    padding: 12px;
-    font-size: 11px;
-    color: #000;
-    outline: none;
-}
-.pad-field input:focus {
-    background-color: #fffde0;
-}
-
-/* Botão de Start Gigante */
-.btn-start {
-    background-color: var(--btn-green);
-    color: var(--text-light);
-    border: 4px solid var(--border-pixel);
-    padding: 15px 25px;
-    font-size: 11px;
-    cursor: pointer;
-    box-shadow: 4px 4px 0px #000;
-}
-.btn-start:hover { background-color: var(--btn-green-hover); }
-.btn-start:active {
-    box-shadow: 0px 0px 0px #000;
-    transform: translate(4px, 4px);
-}
-
-/* Lista de Fases/Servidores */
-.world-map h2 {
-    font-size: 14px;
-    margin-bottom: 20px;
-    color: #0058f8;
-}
-
-.stages-container {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-/* Cada Servidor vira um bloco de Fase */
-.stage-card {
-    background-color: var(--box-yellow);
-    border: 4px solid var(--border-pixel);
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: 15px;
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+    flex-wrap: wrap;
+    padding: 20px 25px;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
-.stage-info {
+.login input {
+    flex: 1 1 200px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--panel-border);
+    background: var(--input-bg);
+    color: var(--text-main);
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.login input:focus {
+    outline: none;
+    box-shadow: 0 0 15px var(--panel-border);
+    border-color: var(--panel-border);
+}
+
+.login button {
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: none;
+    background: var(--panel-border);
+    color: var(--header-text);
+    font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(34, 255, 150, 0.4);
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.login button:hover {
+    transform: translateY(-2px);
+}
+
+/* Grid de resultados */
+#resultado {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px 25px 30px 25px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Cards dos servidores */
+.server {
+    position: relative;
+    background: var(--server-bg);
+    border: 2px solid var(--server-border);
+    border-radius: 15px;
+    padding: 15px;
     display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
-    min-width: 0;
-}
-
-/* O ponto verde de fase */
-.stage-point {
-    width: 14px;
-    height: 14px;
-    background-color: #f83800;
-    border: 2px solid #000;
-    animation: blink 0.6s infinite alternate;
-    flex-shrink: 0;
-}
-
-@keyframes blink {
-    from { background-color: #f83800; }
-    to { background-color: #f8b800; }
-}
-
-.stage-name {
-    font-size: 10px;
-    white-space: nowrap;
-}
-
-.stage-url-box {
-    font-size: 8px;
-    color: #444;
-    background-color: rgba(255,255,255,0.6);
-    border: 2px solid var(--border-pixel);
-    padding: 6px;
-    white-space: nowrap;
+    flex-direction: column;
     overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 250px;
-    margin-left: 10px;
+    box-shadow: var(--server-shadow);
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Botões do Bloco */
-.stage-actions {
+/* Barra de energia contínua */
+.energy-bar {
+    height: 5px;
+    width: 100%;
+    border-radius: 5px;
+    background: linear-gradient(270deg, #0fffa3, #22ff9e, #0fffa3);
+    background-size: 200% 100%;
+    margin-bottom: 10px;
+    animation: wave 4s linear infinite;
+}
+
+@keyframes wave {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+}
+
+.server-name {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--server-border);
+    margin-bottom: 10px;
+}
+
+.server-link {
+    font-size: 12px;
+    word-break: break-all;
+    color: var(--link-color);
+    margin-bottom: 12px;
+}
+
+.actions {
     display: flex;
     gap: 10px;
 }
 
-.stage-actions button {
-    background-color: #ffffff;
-    border: 3px solid var(--border-pixel);
-    padding: 8px 12px;
-    font-size: 8px;
+.actions button {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
-    box-shadow: 3px 3px 0px #000;
-}
-.stage-actions button:active {
-    box-shadow: 0px 0px 0px #000;
-    transform: translate(3px, 3px);
+    border: none;
+    text-transform: uppercase;
 }
 
-.btn-mario-m3u {
-    background-color: #f8b800 !important;
-}
+/* Botões estáticos */
+.copy { background: #3b82f6; color: #fff; }
+.copy.copiado { background: #22ff9e; color: #0a0f1a; }
+.dns { background: #f97316; color: #fff; }
+.dns.copiado { background: #22ff9e; color: #0a0f1a; }
+.testar { background: #475569; color: #fff; font-size:16px; width:36px; }
 
-.stage-actions button.copied {
-    background-color: #00a800 !important;
-    color: white;
-}
-
-.empty-text {
-    text-align: center;
-    padding: 40px 0;
-    color: #555;
-    font-size: 9px;
-    line-height: 1.8;
-}
-
-/* Responsivo para Telas Menores */
-@media(max-width: 780px) {
-    .control-pad { flex-direction: column; align-items: stretch; }
-    .stage-card { flex-direction: column; align-items: stretch; text-align: center; }
-    .stage-info { flex-direction: column; }
-    .stage-url-box { max-width: 100%; margin-left: 0; margin-top: 5px; }
-    .stage-actions { justify-content: center; }
+@media(max-width: 650px){
+    #resultado { grid-template-columns: 1fr; }
+    .theme-btn { position: static; margin-left: auto; margin-top: 5px; }
+    .header { flex-direction: column; gap: 10px; font-size: 24px; }
 }
 </style>
 </head>
 <body>
 
-<div class="mario-container">
-    
-    <!-- Painel de Placar (HUD) -->
-    <div class="mario-hud">
-        <div class="hud-title">
-            <h1>MARIO WORLD M3U</h1>
-            <p>PLAYER 1 - TOTAL CONTROL</p>
-        </div>
-        <button class="theme-switch-btn" onclick="toggleTheme()">MUDAR MUNDO</button>
+<div class="panel">
+    <div class="particles" id="particles"></div>
+    <div class="header">
+        <span>Gerador de M3U</span>
+        <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle-btn">Modo Claro</button>
     </div>
 
-    <!-- Bloco de Comando / Controles -->
-    <div class="control-pad">
-        <div class="pad-field">
-            <label>USUÁRIO (LOGIN)</label>
-            <input id="user" placeholder="NAME" autocomplete="off">
-        </div>
-        <div class="pad-field">
-            <label>SENHA (PASSWORD)</label>
-            <input id="pass" type="text" placeholder="KEY" autocomplete="off">
-        </div>
-        <button class="btn-start" onclick="gerar()">START</button>
+    <div class="login">
+        <input id="user" placeholder="Usuário" autocomplete="off">
+        <input id="pass" type="text" placeholder="Senha" autocomplete="off">
+        <button onclick="gerar()">Gerar Links</button>
     </div>
 
-    <!-- Mapa das Fases -->
-    <div class="world-map">
-        <h2>SELECT STAGE:</h2>
-        <div id="resultado">
-            <div class="empty-text">INSIRA SUAS CREDENCIAIS<br>E APERTE START PARA ABRIR O MAPA!</div>
-        </div>
-    </div>
-
+    <div id="resultado"></div>
 </div>
 
 <script>
-// Lista de servidores transformados em mundos/fases clássicas
+// Criar partículas
+const particlesContainer = document.getElementById('particles');
+for(let i=0; i<80; i++){
+    let p = document.createElement('span');
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + '%';
+    p.style.width = Math.random()*3 + 1 + 'px';
+    p.style.height = p.style.width;
+    p.style.animationDuration = (5 + Math.random()*5) + 's';
+    p.style.opacity = Math.random() * 0.5 + 0.2;
+    particlesContainer.appendChild(p);
+}
+
+// Servidores reorganizados na ordem padrão antiga
 const servidores = [
-    {nome:"1-1 SEVEN ISLAND", url:"http://seven.blcplay.com"},
-    {nome:"1-2 EXPLOSION BOMBS", url:"http://nsync.space"},
-    {nome:"1-3 SPEED ZONE", url:"http://netuno.live"},
-    {nome:"2-1 GALAXY CASTLE", url:"http://galaxy.blcplay.com"},
-    {nome:"2-2 LUNAR VALLEY", url:"http://lunar.kkrototv.fun"},
-    {nome:"2-3 ATENA TEMPLE", url:"http://atena.kkrototv.fun"},
-    {nome:"3-1 SOLAR MOUNTAIN", url:"http://solar.kkrototv.fun"},
-    {nome:"3-2 VENUS WIND", url:"http://venus.blcplay.com"},
-    {nome:"3-3 FIRE BRIDGE", url:"http://fire.kkrototv.fun"}
+    {nome:"🧿 Seven 🧿", url:"http://seven.blcplay.com"},
+    {nome:"💣 Explosion 💣", url:"http://nsync.space"},
+    {nome:"⚡ Speed ⚡", url:"http://netuno.live"},
+    {nome:"🛸 Galaxy 🛸", url:"http://galaxy.blcplay.com"},
+    {nome:"🌑 Lunar 🌑", url:"http://lunar.kkrototv.fun"},
+    {nome:"🏛️ Atena 🏛️", url:"http://atena.kkrototv.fun"},
+    {nome:"☀️ Solar ☀️", url:"http://solar.kkrototv.fun"},
+    {nome:"🌬️ Venus 🌬️", url:"http://venus.blcplay.com"},
+    {nome:"🔥 Fire 🔥", url:"http://fire.kkrototv.fun"}
 ];
 
 function toggleTheme() {
     const body = document.documentElement;
+    const btn = document.getElementById("theme-toggle-btn");
+    
     if (body.getAttribute("data-theme") === "light") {
         body.removeAttribute("data-theme");
+        btn.innerText = "Modo Claro";
     } else {
         body.setAttribute("data-theme", "light");
+        btn.innerText = "Modo Escuro";
     }
 }
 
@@ -324,49 +323,42 @@ function gerar(){
     let pass = document.getElementById("pass").value.trim();
 
     if(!user || !pass){
-        alert("ERRO! INSIRA SEU USUARIO E SENHA.");
+        alert("Preencha usuário e senha");
         return;
     }
 
     let resultado = document.getElementById("resultado");
     resultado.innerHTML = "";
 
-    let listContainer = document.createElement("div");
-    listContainer.className = "stages-container";
-
-    servidores.forEach((s, i)=>{
+    servidores.forEach((s,i)=>{
         let link = `${s.url}/get.php?username=${user}&password=${pass}&type=m3u_plus&output=mpegts`;
 
-        let row = document.createElement("div");
-        row.className = "stage-card";
-        row.innerHTML = `
-            <div class="stage-info">
-                <div class="stage-point"></div>
-                <div class="stage-name">${s.nome}</div>
-                <div class="stage-url-box">${link}</div>
-            </div>
-            <div class="stage-actions">
-                <button id="m3u${i}" class="btn-mario-m3u">M3U</button>
-                <button id="dns${i}">DNS</button>
-                <button onclick="testar('${s.url}')">GO ↗</button>
+        let div = document.createElement("div");
+        div.className = "server";
+        div.innerHTML = `
+            <div class="energy-bar"></div>
+            <div class="server-name">${s.nome}</div>
+            <div class="server-link">${link}</div>
+            <div class="actions">
+                <button id="m3u${i}" class="copy">Copiar</button>
+                <button id="dns${i}" class="dns">DNS</button>
+                <button class="testar" onclick="testar('${s.url}')">↗</button>
             </div>
         `;
-        listContainer.appendChild(row);
-        resultado.appendChild(listContainer);
+        resultado.appendChild(div);
 
-        // Ações Mecânicas Retrô de Cópia
         document.getElementById(`m3u${i}`).onclick = function(){
             navigator.clipboard.writeText(link);
-            this.innerText = "OK!";
-            this.classList.add("copied");
-            setTimeout(() => { this.innerText = "M3U"; this.classList.remove("copied"); }, 1200);
+            this.innerText = "Copiado";
+            this.classList.add("copiado");
+            setTimeout(() => { this.innerText = "Copiar"; this.classList.remove("copiado"); }, 1500);
         };
 
         document.getElementById(`dns${i}`).onclick = function(){
             navigator.clipboard.writeText(s.url);
-            this.innerText = "OK!";
-            this.classList.add("copied");
-            setTimeout(() => { this.innerText = "DNS"; this.classList.remove("copied"); }, 1200);
+            this.innerText = "Copiado";
+            this.classList.add("copiado");
+            setTimeout(() => { this.innerText = "DNS"; this.classList.remove("copiado"); }, 1500);
         };
     });
 }
