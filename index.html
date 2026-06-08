@@ -45,10 +45,10 @@
     --switch-bg: rgba(255, 255, 255, 0.4);
 }
 
-/* --- PALETAS DOS SERVIDORES --- */
+/* --- NOVAS PALETAS BASEADAS EM CORES --- */
 
-/* 1. Seven */
-[data-palette="seven"] {
+/* 1. Azul Royal (antigo Seven) */
+[data-palette="azul"] {
     --panel-border: #3b82f6;
     --panel-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
     --header-bg: linear-gradient(90deg, #1d4ed8, #3b82f6);
@@ -58,34 +58,34 @@
     --link-color: #cffaf2;
     --particle-color: #3b82f6;
 }
-[data-theme="light"][data-palette="seven"] {
+[data-theme="light"][data-palette="azul"] {
     --panel-border: #1d4ed8;
     --header-bg: linear-gradient(90deg, #1e3a8a, #1d4ed8);
     --server-border: #0369a1;
     --link-color: #1e3a8a;
 }
 
-/* 2. Explosion */
-[data-palette="explosion"] {
-    --panel-border: #facc15;
-    --panel-shadow: 0 0 40px rgba(250, 204, 21, 0.4);
-    --header-bg: linear-gradient(90deg, #b45309, #facc15);
-    --header-text: #0a0f1a;
-    --server-border: #eab308;
-    --server-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
-    --link-color: #fef9c3;
-    --particle-color: #facc15;
-}
-[data-theme="light"][data-palette="explosion"] {
-    --panel-border: #ca8a04;
-    --header-bg: linear-gradient(90deg, #78350f, #ca8a04);
+/* 2. Âmbar Bronze (antigo Explosion - Nova cor totalmente diferente do Solar) */
+[data-palette="ambar"] {
+    --panel-border: #cd7f32;
+    --panel-shadow: 0 0 40px rgba(205, 127, 50, 0.4);
+    --header-bg: linear-gradient(90deg, #4a2c11, #cd7f32);
     --header-text: #ffffff;
-    --server-border: #854d0e;
-    --link-color: #713f12;
+    --server-border: #b87333;
+    --server-shadow: 0 0 20px rgba(184, 115, 51, 0.3);
+    --link-color: #ffe4c4;
+    --particle-color: #cd7f32;
+}
+[data-theme="light"][data-palette="ambar"] {
+    --panel-border: #8b5a2b;
+    --header-bg: linear-gradient(90deg, #3e2723, #8b5a2b);
+    --header-text: #ffffff;
+    --server-border: #5c3a21;
+    --link-color: #3e2723;
 }
 
-/* 3. Speed */
-[data-palette="speed"] {
+/* 3. Amarelo Ouro (antigo Speed) */
+[data-palette="amarelo"] {
     --panel-border: #eab308;
     --panel-shadow: 0 0 40px rgba(234, 179, 8, 0.5);
     --header-bg: linear-gradient(90deg, #ca8a04, #facc15);
@@ -95,7 +95,7 @@
     --link-color: #fef9c3;
     --particle-color: #eab308;
 }
-[data-theme="light"][data-palette="speed"] {
+[data-theme="light"][data-palette="amarelo"] {
     --panel-border: #a16207;
     --header-bg: linear-gradient(90deg, #854d0e, #ca8a04);
     --header-text: #ffffff;
@@ -103,8 +103,8 @@
     --link-color: #713f12;
 }
 
-/* 4. Galaxy */
-[data-palette="galaxy"] {
+/* 4. Roxo Neon (antigo Galaxy) */
+[data-palette="roxo"] {
     --panel-border: #a855f7;
     --panel-shadow: 0 0 40px rgba(168, 85, 247, 0.5);
     --header-bg: linear-gradient(90deg, #4c1d95, #7e22ce);
@@ -114,15 +114,15 @@
     --link-color: #e9d5ff;
     --particle-color: #a855f7;
 }
-[data-theme="light"][data-palette="galaxy"] {
+[data-theme="light"][data-palette="roxo"] {
     --panel-border: #6b21a8;
     --header-bg: linear-gradient(90deg, #3b0764, #6b21a8);
     --server-border: #7e22ce;
     --link-color: #5b21b6;
 }
 
-/* 5. Lunar */
-[data-palette="lunar"] {
+/* 5. Cinza Platina (antigo Lunar) */
+[data-palette="cinza"] {
     --panel-border: #94a3b8;
     --panel-shadow: 0 0 40px rgba(148, 163, 184, 0.4);
     --header-bg: linear-gradient(90deg, #334155, #64748b);
@@ -132,33 +132,33 @@
     --link-color: #f1f5f9;
     --particle-color: #94a3b8;
 }
-[data-theme="light"][data-palette="lunar"] {
+[data-theme="light"][data-palette="cinza"] {
     --panel-border: #475569;
     --header-bg: linear-gradient(90deg, #1e293b, #475569);
     --server-border: #334155;
     --link-color: #1e293b;
 }
 
-/* 6. Atena */
-[data-palette="atena"] {
+/* 6. Azul Oceano (antigo Atena) */
+[data-palette="oceano"] {
     --panel-border: #0284c7;
     --panel-shadow: 0 0 40px rgba(2, 132, 199, 0.5);
-    --header-bg: linear-gradient(90deg, #0369a1, #b45309);
+    --header-bg: linear-gradient(90deg, #0369a1, #0284c7);
     --header-text: #ffffff;
-    --server-border: #f59e0b;
-    --server-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
-    --link-color: #fef3c7;
+    --server-border: #38bdf8;
+    --server-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+    --link-color: #e0f2fe;
     --particle-color: #0284c7;
 }
-[data-theme="light"][data-palette="atena"] {
+[data-theme="light"][data-palette="oceano"] {
     --panel-border: #0369a1;
-    --header-bg: linear-gradient(90deg, #1e3a8a, #78350f);
+    --header-bg: linear-gradient(90deg, #0f172a, #0369a1);
     --server-border: #0284c7;
     --link-color: #1d4ed8;
 }
 
-/* 7. Solar */
-[data-palette="solar"] {
+/* 7. Laranja Solar (antigo Solar) */
+[data-palette="laranja"] {
     --panel-border: #f97316;
     --panel-shadow: 0 0 40px rgba(249, 115, 22, 0.5);
     --header-bg: linear-gradient(90deg, #ea580c, #facc15);
@@ -168,7 +168,7 @@
     --link-color: #ffedd5;
     --particle-color: #f97316;
 }
-[data-theme="light"][data-palette="solar"] {
+[data-theme="light"][data-palette="laranja"] {
     --panel-border: #c2410c;
     --header-bg: linear-gradient(90deg, #9a3412, #ea580c);
     --header-text: #ffffff;
@@ -176,8 +176,8 @@
     --link-color: #9a3412;
 }
 
-/* 8. Venus */
-[data-palette="venus"] {
+/* 8. Verde Esmeralda (antigo Venus) */
+[data-palette="esmeralda"] {
     --panel-border: #0d9488;
     --panel-shadow: 0 0 40px rgba(13, 148, 136, 0.5);
     --header-bg: linear-gradient(90deg, #115e59, #0d9488);
@@ -187,7 +187,7 @@
     --link-color: #e6fffa;
     --particle-color: #0d9488;
 }
-[data-theme="light"][data-palette="venus"] {
+[data-theme="light"][data-palette="esmeralda"] {
     --panel-border: #115e59;
     --header-bg: linear-gradient(90deg, #134e4a, #14b8a6);
     --header-text: #ffffff;
@@ -195,8 +195,8 @@
     --link-color: #115e59;
 }
 
-/* 9. Fire */
-[data-palette="fire"] {
+/* 9. Vermelho Fogo (antigo Fire) */
+[data-palette="vermelho"] {
     --panel-border: #dc2626;
     --panel-shadow: 0 0 40px rgba(220, 38, 38, 0.5);
     --header-bg: linear-gradient(90deg, #7f1d1d, #dc2626);
@@ -206,15 +206,15 @@
     --link-color: #fee2e2;
     --particle-color: #dc2626;
 }
-[data-theme="light"][data-palette="fire"] {
+[data-theme="light"][data-palette="vermelho"] {
     --panel-border: #991b1b;
     --header-bg: linear-gradient(90deg, #7f1d1d, #b91c1c);
     --server-border: #991b1b;
     --link-color: #7f1d1d;
 }
 
-/* 10. Urano */
-[data-palette="urano"] {
+/* 10. Ciano Neon (antigo Urano) */
+[data-palette="ciano"] {
     --panel-border: #06b6d4;
     --panel-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
     --header-bg: linear-gradient(90deg, #0f766e, #06b6d4);
@@ -224,7 +224,7 @@
     --link-color: #ecfeff;
     --particle-color: #06b6d4;
 }
-[data-theme="light"][data-palette="urano"] {
+[data-theme="light"][data-palette="ciano"] {
     --panel-border: #0891b2;
     --header-bg: linear-gradient(90deg, #164e63, #06b6d4);
     --server-border: #0891b2;
@@ -249,7 +249,6 @@ body {
     min-height: 100vh;
 }
 
-/* REMOVIDO OVERFLOW HIDDEN PARA PERMITIR MENU NA FRENTE */
 .panel {
     position: relative;
     width: 100%;
@@ -287,7 +286,7 @@ body {
     100% { transform: translateY(-600px) translateX(20px); opacity: 0; }
 }
 
-/* Cabeçalho Ajustado com Raio Interno exato (-2px do container principal) */
+/* Cabeçalho */
 .header {
     position: relative;
     background: var(--header-bg);
@@ -306,7 +305,6 @@ body {
     border-top-right-radius: 18px;
 }
 
-/* Grupo de botões no lado direito */
 .header-controls {
     display: flex;
     align-items: center;
@@ -371,12 +369,12 @@ input:checked + .slider::before { opacity: 0.4; }
 }
 .theme-panel-btn:hover { transform: scale(1.15); }
 
-/* MENU FLUTUANTE DE CORES COM CAMADA DE TOPO ABSOLUTA */
+/* MENU DE TEMAS NO CANTO PERFEITO (Alinhado com o Lápis sempre) */
 .color-panel {
     display: none;
     position: absolute;
-    top: 62px;
-    right: 20px;
+    top: 55px;
+    right: 40px; /* Alinha bem colado ao botão de lápis no canto */
     background: #0f1320;
     border: 2px solid var(--panel-border);
     padding: 10px;
@@ -387,7 +385,7 @@ input:checked + .slider::before { opacity: 0.4; }
     width: 180px;
     max-height: 280px;
     overflow-y: auto;
-    z-index: 9999999 !important; /* Valor extremo para ficar por cima de inputs/botões sempre */
+    z-index: 9999999 !important;
 }
 .color-panel.active { display: flex; }
 .color-opt {
@@ -405,7 +403,6 @@ input:checked + .slider::before { opacity: 0.4; }
 .color-opt:hover { background: rgba(255,255,255,0.15); }
 .circle-preview { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 
-/* Scrollbar Customizado */
 .color-panel::-webkit-scrollbar { width: 4px; }
 .color-panel::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 10px; }
 
@@ -459,8 +456,6 @@ input:checked + .slider::before { opacity: 0.4; }
     padding: 0 25px 30px 25px;
     position: relative;
     z-index: 1;
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px;
 }
 
 .server {
@@ -513,7 +508,7 @@ input:checked + .slider::before { opacity: 0.4; }
 @media(max-width: 650px) {
     #resultado { grid-template-columns: 1fr; }
     .header { font-size: 18px; }
-    .color-panel { right: 50%; transform: translateX(50%); top: 65px; } /* Centralizado perfeitamente no Mobile */
+    .color-panel { right: 10px; top: 60px; } /* Mantém colado no canto superior direito no mobile */
 }
 </style>
 </head>
@@ -538,35 +533,35 @@ input:checked + .slider::before { opacity: 0.4; }
             <div class="color-opt" onclick="setPalette('default')">
                 <div class="circle-preview" style="background:#16f09e;"></div> Verde Padrão
             </div>
-            <div class="color-opt" onclick="setPalette('seven')">
-                <div class="circle-preview" style="background:#3b82f6;"></div> Seven
+            <div class="color-opt" onclick="setPalette('azul')">
+                <div class="circle-preview" style="background:#3b82f6;"></div> Azul Royal
             </div>
-            <div class="color-opt" onclick="setPalette('explosion')">
-                <div class="circle-preview" style="background:#facc15;"></div> Explosion
+            <div class="color-opt" onclick="setPalette('ambar')">
+                <div class="circle-preview" style="background:#cd7f32;"></div> Âmbar Bronze
             </div>
-            <div class="color-opt" onclick="setPalette('speed')">
-                <div class="circle-preview" style="background:#eab308;"></div> Speed
+            <div class="color-opt" onclick="setPalette('amarelo')">
+                <div class="circle-preview" style="background:#eab308;"></div> Amarelo Ouro
             </div>
-            <div class="color-opt" onclick="setPalette('galaxy')">
-                <div class="circle-preview" style="background:#a855f7;"></div> Galaxy
+            <div class="color-opt" onclick="setPalette('roxo')">
+                <div class="circle-preview" style="background:#a855f7;"></div> Roxo Neon
             </div>
-            <div class="color-opt" onclick="setPalette('lunar')">
-                <div class="circle-preview" style="background:#94a3b8;"></div> Lunar
+            <div class="color-opt" onclick="setPalette('cinza')">
+                <div class="circle-preview" style="background:#94a3b8;"></div> Cinza Platina
             </div>
-            <div class="color-opt" onclick="setPalette('atena')">
-                <div class="circle-preview" style="background:#0284c7;"></div> Atena
+            <div class="color-opt" onclick="setPalette('oceano')">
+                <div class="circle-preview" style="background:#0284c7;"></div> Azul Oceano
             </div>
-            <div class="color-opt" onclick="setPalette('solar')">
-                <div class="circle-preview" style="background:#f97316;"></div> Solar
+            <div class="color-opt" onclick="setPalette('laranja')">
+                <div class="circle-preview" style="background:#f97316;"></div> Laranja Solar
             </div>
-            <div class="color-opt" onclick="setPalette('venus')">
-                <div class="circle-preview" style="background:#0d9488;"></div> Venus
+            <div class="color-opt" onclick="setPalette('esmeralda')">
+                <div class="circle-preview" style="background:#0d9488;"></div> Verde Esmeralda
             </div>
-            <div class="color-opt" onclick="setPalette('fire')">
-                <div class="circle-preview" style="background:#dc2626;"></div> Fire
+            <div class="color-opt" onclick="setPalette('vermelho')">
+                <div class="circle-preview" style="background:#dc2626;"></div> Vermelho Fogo
             </div>
-            <div class="color-opt" onclick="setPalette('urano')">
-                <div class="circle-preview" style="background:#06b6d4;"></div> Urano
+            <div class="color-opt" onclick="setPalette('ciano')">
+                <div class="circle-preview" style="background:#06b6d4;"></div> Ciano Neon
             </div>
         </div>
     </div>
