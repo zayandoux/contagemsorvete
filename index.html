@@ -133,28 +133,32 @@ body {
     100% { transform: translateY(-600px) translateX(20px); opacity: 0; }
 }
 
-/* Cabeçalho */
+/* Cabeçalho alinhado à esquerda */
 .header {
     position: relative;
     background: var(--header-bg);
     color: var(--header-text);
     font-family: 'Orbitron', sans-serif;
-    text-align: center;
-    font-size: 26px; /* Ajustado um pouco para telas pequenas */
+    text-align: left;
+    font-size: 24px;
     font-weight: 700;
-    padding: 25px;
+    padding: 22px 25px;
     z-index: 10;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
-/* INTERRUPTOR OBRIGADO A FICAR NO CANTO SUPERIOR DIREITO */
+/* Grupo de botões no lado direito */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* INTERRUPTOR MINI */
 .theme-switch {
-    position: absolute !important;
-    right: 20px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+    position: relative;
     display: block;
     width: 46px;
     height: 24px;
@@ -198,32 +202,31 @@ input:checked + .slider .knob { transform: translateX(22px); background-color: #
 input:checked + .slider::after { opacity: 1; }
 input:checked + .slider::before { opacity: 0.4; }
 
-/* BOTÃO ENGRENAGEM NO CANTO SUPERIOR ESQUERDO */
+/* BOTÃO ENGRENAGEM NO CANTO DIREITO JUNTO COM SWITCH */
 .gear-btn {
-    position: absolute !important;
-    left: 20px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
     background: transparent;
     border: none;
     font-size: 20px;
     cursor: pointer;
     z-index: 20;
     transition: transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.gear-btn:hover { transform: translateY(-50%) rotate(45deg) !important; }
+.gear-btn:hover { transform: rotate(45deg); }
 
-/* MENU FLUTUANTE DE CORES COM CAMADA DE TOPO ABSOLUTA (Z-INDEX) */
+/* MENU FLUTUANTE DE CORES - ALINHADO À DIREITA AGORA */
 .color-panel {
     display: none;
     position: absolute;
     top: 65px;
-    left: 20px;
+    right: 20px;
     background: #0f1320;
     border: 2px solid var(--panel-border);
     padding: 12px;
     border-radius: 12px;
-    z-index: 9999 !important; /* Passa por cima de tudo na tela */
+    z-index: 9999 !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     gap: 8px;
     flex-direction: column;
@@ -241,12 +244,11 @@ input:checked + .slider::before { opacity: 0.4; }
     font-size: 13px;
     font-weight: 500;
     color: #fff;
-    font-family: 'Roboto', sans-serif;
 }
 .color-opt:hover { background: rgba(255,255,255,0.15); }
-.circle-preview { width: 12px; height: 12px; border-radius: 50%; shrink: 0; }
+.circle-preview { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 
-/* Login - Caixa Inicial Própria e Isolada */
+/* Login */
 .login {
     display: flex;
     gap: 15px;
@@ -345,7 +347,6 @@ input:checked + .slider::before { opacity: 0.4; }
 
 @media(max-width: 650px){
     #resultado { grid-template-columns: 1fr; }
-    /* Removidas as regras que tiravam os botões dos cantos no mobile */
 }
 </style>
 </head>
@@ -354,14 +355,17 @@ input:checked + .slider::before { opacity: 0.4; }
 <div class="panel">
     <div class="particles" id="particles"></div>
     <div class="header">
-        <button class="gear-btn" onclick="toggleColorPanel()" title="Painel de Temas">⚙️</button>
         <span>Gerador de M3U</span>
-        <label class="theme-switch" title="Alternar Luz/Sombra">
-            <input type="checkbox" id="theme-toggle-chk" onchange="toggleTheme()">
-            <div class="slider">
-                <span class="knob"></span>
-            </div>
-        </label>
+        
+        <div class="header-controls">
+            <button class="gear-btn" onclick="toggleColorPanel()" title="Painel de Temas">⚙️</button>
+            <label class="theme-switch" title="Alternar Luz/Sombra">
+                <input type="checkbox" id="theme-toggle-chk" onchange="toggleTheme()">
+                <div class="slider">
+                    <span class="knob"></span>
+                </div>
+            </label>
+        </div>
 
         <div class="color-panel" id="color-menu">
             <div class="color-opt" onclick="setPalette('default')">
@@ -389,6 +393,20 @@ input:checked + .slider::before { opacity: 0.4; }
 </div>
 
 <script>
+// EXECUTAR AO CARREGAR A PÁGINA: Recupera apenas o estado do Tema (light ou dark) do LocalStorage
+document.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("app-theme");
+    const themeChk = document.getElementById("theme-toggle-chk");
+    
+    if (savedTheme === "light") {
+        document.documentElement.setAttribute("data-theme", "light");
+        themeChk.checked = true;
+    } else {
+        document.documentElement.removeAttribute("data-theme");
+        themeChk.checked = false;
+    }
+});
+
 // Criar partículas
 const particlesContainer = document.getElementById('particles');
 for(let i=0; i<80; i++){
@@ -421,8 +439,10 @@ function toggleTheme() {
     const isChecked = document.getElementById("theme-toggle-chk").checked;
     if (isChecked) {
         body.setAttribute("data-theme", "light");
+        localStorage.setItem("app-theme", "light"); // Salva preferência
     } else {
         body.removeAttribute("data-theme");
+        localStorage.setItem("app-theme", "dark");  // Salva preferência
     }
 }
 
