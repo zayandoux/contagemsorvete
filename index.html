@@ -116,13 +116,14 @@ body {
     align-items: center;
 }
 
-/* INTERRUPTOR MINI SOL/LUA ULTRA COMPACTO */
+/* INTERRUPTOR MINI - CORRIGIDO PARA NÃO ESTICAR NO RETÂNGULO VERDE */
 .theme-switch {
     position: absolute;
     right: 25px;
-    display: inline-block;
-    width: 28px;  /* Largura reduzida ao máximo */
-    height: 16px; /* Altura super delicada */
+    display: inline-flex;
+    align-items: center;
+    width: 34px;   /* Largura total do botão fixada */
+    height: 18px;  /* Altura total do botão fixada */
     cursor: pointer;
 }
 
@@ -137,23 +138,23 @@ body {
     top: 0; left: 0; right: 0; bottom: 0;
     background-color: var(--switch-bg);
     transition: 0.3s;
-    border-radius: 16px;
+    border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2px;
+    padding: 0 3px;
 }
 
 .slider::before {
     content: "🌙";
-    font-size: 7px;
+    font-size: 8px;
     order: 2;
     transition: 0.3s;
 }
 
 .slider::after {
     content: "☀️";
-    font-size: 7px;
+    font-size: 8px;
     order: 1;
     opacity: 0.3;
     transition: 0.3s;
@@ -163,8 +164,8 @@ body {
     position: absolute;
     height: 12px;
     width: 12px;
-    left: 2px;
-    bottom: 2px;
+    left: 3px;
+    bottom: 3px;
     background-color: white;
     transition: 0.3s ease-in-out;
     border-radius: 50%;
@@ -177,7 +178,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider .knob {
-    transform: translateX(12px); /* Deslocamento proporcional ao tamanho micro */
+    transform: translateX(16px); /* Movimento preciso dentro do limite curto */
 }
 
 input:checked + .slider::before {
@@ -188,7 +189,7 @@ input:checked + .slider::after {
     opacity: 1;
 }
 
-/* Login - Mantendo a proporção exata da caixa original */
+/* Login */
 .login {
     display: flex;
     gap: 15px;
