@@ -45,9 +45,9 @@
     --switch-bg: rgba(255, 255, 255, 0.4);
 }
 
-/* --- PALETAS EXTRAS --- */
+/* --- PALETAS DE CORES ANTIGAS E NOVAS --- */
 
-/* Cyber Punk (Escuro e Claro) */
+/* 1. Cyber Punk */
 [data-palette="cyberpunk"] {
     --panel-border: #ff007f;
     --panel-shadow: 0 0 40px rgba(255, 0, 127, 0.5);
@@ -65,7 +65,7 @@
     --link-color: #7b1fa2;
 }
 
-/* Inferno (Escuro e Claro) */
+/* 2. Inferno */
 [data-palette="inferno"] {
     --panel-border: #f97316;
     --panel-shadow: 0 0 40px rgba(249, 115, 22, 0.5);
@@ -83,7 +83,7 @@
     --link-color: #bf360c;
 }
 
-/* Deep Ocean (Escuro e Claro) */
+/* 3. Deep Ocean */
 [data-palette="ocean"] {
     --panel-border: #06b6d4;
     --panel-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
@@ -99,6 +99,97 @@
     --header-bg: linear-gradient(90deg, #01579b, #006064);
     --server-border: #0277bd;
     --link-color: #01579b;
+}
+
+/* 4. Purple Neon (NOVO) */
+[data-palette="purple"] {
+    --panel-border: #a855f7;
+    --panel-shadow: 0 0 40px rgba(168, 85, 247, 0.5);
+    --header-bg: linear-gradient(90deg, #6366f1, #a855f7);
+    --header-text: #ffffff;
+    --server-border: #c084fc;
+    --server-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
+    --link-color: #e9d5ff;
+    --particle-color: #a855f7;
+}
+[data-theme="light"][data-palette="purple"] {
+    --panel-border: #6b21a8;
+    --header-bg: linear-gradient(90deg, #4c1d95, #7e22ce);
+    --server-border: #6b21a8;
+    --link-color: #5b21b6;
+}
+
+/* 5. Gold Luxury (NOVO) */
+[data-palette="gold"] {
+    --panel-border: #eab308;
+    --panel-shadow: 0 0 40px rgba(234, 179, 8, 0.5);
+    --header-bg: linear-gradient(90deg, #ca8a04, #eab308);
+    --header-text: #0a0f1a;
+    --server-border: #fef08a;
+    --server-shadow: 0 0 20px rgba(254, 240, 138, 0.3);
+    --link-color: #fef9c3;
+    --particle-color: #eab308;
+}
+[data-theme="light"][data-palette="gold"] {
+    --panel-border: #854d0e;
+    --header-bg: linear-gradient(90deg, #a16207, #eab308);
+    --header-text: #ffffff;
+    --server-border: #854d0e;
+    --link-color: #713f12;
+}
+
+/* 6. Sakura Pink (NOVO) */
+[data-palette="sakura"] {
+    --panel-border: #ec4899;
+    --panel-shadow: 0 0 40px rgba(236, 72, 153, 0.5);
+    --header-bg: linear-gradient(90deg, #f43f5e, #ec4899);
+    --header-text: #ffffff;
+    --server-border: #f472b6;
+    --server-shadow: 0 0 20px rgba(244, 114, 182, 0.4);
+    --link-color: #fce7f3;
+    --particle-color: #ec4899;
+}
+[data-theme="light"][data-palette="sakura"] {
+    --panel-border: #9d174d;
+    --header-bg: linear-gradient(90deg, #be123c, #ec4899);
+    --server-border: #9d174d;
+    --link-color: #9d174d;
+}
+
+/* 7. Forest Green (NOVO) */
+[data-palette="forest"] {
+    --panel-border: #22c55e;
+    --panel-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
+    --header-bg: linear-gradient(90deg, #14532d, #166534);
+    --header-text: #ffffff;
+    --server-border: #4ade80;
+    --server-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+    --link-color: #bbf7d0;
+    --particle-color: #22c55e;
+}
+[data-theme="light"][data-palette="forest"] {
+    --panel-border: #166534;
+    --header-bg: linear-gradient(90deg, #14532d, #15803d);
+    --server-border: #166534;
+    --link-color: #14532d;
+}
+
+/* 8. Blood Red (NOVO) */
+[data-palette="blood"] {
+    --panel-border: #dc2626;
+    --panel-shadow: 0 0 40px rgba(220, 38, 38, 0.5);
+    --header-bg: linear-gradient(90deg, #7f1d1d, #dc2626);
+    --header-text: #ffffff;
+    --server-border: #ef4444;
+    --server-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+    --link-color: #fee2e2;
+    --particle-color: #dc2626;
+}
+[data-theme="light"][data-palette="blood"] {
+    --panel-border: #991b1b;
+    --header-bg: linear-gradient(90deg, #7f1d1d, #b91c1c);
+    --server-border: #991b1b;
+    --link-color: #7f1d1d;
 }
 
 * {
@@ -240,7 +331,7 @@ input:checked + .slider::before { opacity: 0.4; }
 }
 .gear-btn:hover { transform: rotate(45deg); }
 
-/* MENU FLUTUANTE DE CORES */
+/* MENU FLUTUANTE DE CORES (Suporta rolagem interna se a tela for pequena) */
 .color-panel {
     display: none;
     position: absolute;
@@ -254,7 +345,9 @@ input:checked + .slider::before { opacity: 0.4; }
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     gap: 8px;
     flex-direction: column;
-    width: 170px;
+    width: 180px;
+    max-height: 380px;
+    overflow-y: auto;
 }
 .color-panel.active { display: flex; }
 .color-opt {
@@ -271,6 +364,10 @@ input:checked + .slider::before { opacity: 0.4; }
 }
 .color-opt:hover { background: rgba(255,255,255,0.15); }
 .circle-preview { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+/* Barra de rolagem customizada para o menu de cores */
+.color-panel::-webkit-scrollbar { width: 4px; }
+.color-panel::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 10px; }
 
 /* Login */
 .login {
@@ -406,6 +503,21 @@ input:checked + .slider::before { opacity: 0.4; }
             <div class="color-opt" onclick="setPalette('ocean')">
                 <div class="circle-preview" style="background:#06b6d4;"></div> Deep Ocean
             </div>
+            <div class="color-opt" onclick="setPalette('purple')">
+                <div class="circle-preview" style="background:#a855f7;"></div> Purple Neon
+            </div>
+            <div class="color-opt" onclick="setPalette('gold')">
+                <div class="circle-preview" style="background:#eab308;"></div> Gold Luxury
+            </div>
+            <div class="color-opt" onclick="setPalette('sakura')">
+                <div class="circle-preview" style="background:#ec4899;"></div> Sakura Pink
+            </div>
+            <div class="color-opt" onclick="setPalette('forest')">
+                <div class="circle-preview" style="background:#22c55e;"></div> Forest Green
+            </div>
+            <div class="color-opt" onclick="setPalette('blood')">
+                <div class="circle-preview" style="background:#dc2626;"></div> Blood Red
+            </div>
         </div>
     </div>
 
@@ -488,10 +600,10 @@ function setPalette(name) {
     const body = document.documentElement;
     if (name === 'default') {
         body.removeAttribute("data-palette");
-        localStorage.setItem("app-palette", "default"); // Salva paleta padrão no storage
+        localStorage.setItem("app-palette", "default");
     } else {
         body.setAttribute("data-palette", name);
-        localStorage.setItem("app-palette", name);    // Salva nova paleta selecionada no storage
+        localStorage.setItem("app-palette", name);
     }
     document.getElementById("color-menu").classList.remove("active");
 }
