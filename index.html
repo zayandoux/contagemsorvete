@@ -45,9 +45,9 @@
     --switch-bg: rgba(255, 255, 255, 0.4);
 }
 
-/* --- NOVAS PALETAS DOS SERVIDORES --- */
+/* --- PALETAS DOS SERVIDORES --- */
 
-/* 1. Seven (Azul Royal/Ciano) */
+/* 1. Seven */
 [data-palette="seven"] {
     --panel-border: #3b82f6;
     --panel-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
@@ -65,12 +65,12 @@
     --link-color: #1e3a8a;
 }
 
-/* 2. Explosion (Chumbo/Amarelo Alerta) */
+/* 2. Explosion (Corrigido contraste do botão) */
 [data-palette="explosion"] {
     --panel-border: #facc15;
     --panel-shadow: 0 0 40px rgba(250, 204, 21, 0.4);
-    --header-bg: linear-gradient(90deg, #451a03, #78350f);
-    --header-text: #facc15;
+    --header-bg: linear-gradient(90deg, #b45309, #facc15);
+    --header-text: #0a0f1a;
     --server-border: #eab308;
     --server-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
     --link-color: #fef9c3;
@@ -84,7 +84,7 @@
     --link-color: #713f12;
 }
 
-/* 3. Speed (Amarelo Elétrico) */
+/* 3. Speed */
 [data-palette="speed"] {
     --panel-border: #eab308;
     --panel-shadow: 0 0 40px rgba(234, 179, 8, 0.5);
@@ -103,7 +103,7 @@
     --link-color: #713f12;
 }
 
-/* 4. Galaxy (Roxo Cósmico) */
+/* 4. Galaxy */
 [data-palette="galaxy"] {
     --panel-border: #a855f7;
     --panel-shadow: 0 0 40px rgba(168, 85, 247, 0.5);
@@ -121,7 +121,7 @@
     --link-color: #5b21b6;
 }
 
-/* 5. Lunar (Prata/Cinza Lunar) */
+/* 5. Lunar */
 [data-palette="lunar"] {
     --panel-border: #94a3b8;
     --panel-shadow: 0 0 40px rgba(148, 163, 184, 0.4);
@@ -139,7 +139,7 @@
     --link-color: #1e293b;
 }
 
-/* 6. Atena (Azul Grego/Dourado) */
+/* 6. Atena */
 [data-palette="atena"] {
     --panel-border: #0284c7;
     --panel-shadow: 0 0 40px rgba(2, 132, 199, 0.5);
@@ -157,7 +157,7 @@
     --link-color: #1d4ed8;
 }
 
-/* 7. Solar (Laranja Intenso) */
+/* 7. Solar */
 [data-palette="solar"] {
     --panel-border: #f97316;
     --panel-shadow: 0 0 40px rgba(249, 115, 22, 0.5);
@@ -176,7 +176,7 @@
     --link-color: #9a3412;
 }
 
-/* 8. Venus (Verde Água/Menta) */
+/* 8. Venus */
 [data-palette="venus"] {
     --panel-border: #0d9488;
     --panel-shadow: 0 0 40px rgba(13, 148, 136, 0.5);
@@ -195,7 +195,7 @@
     --link-color: #115e59;
 }
 
-/* 9. Fire (Vermelho Fogo) */
+/* 9. Fire */
 [data-palette="fire"] {
     --panel-border: #dc2626;
     --panel-shadow: 0 0 40px rgba(220, 38, 38, 0.5);
@@ -213,7 +213,7 @@
     --link-color: #7f1d1d;
 }
 
-/* 10. Urano (Azul Glacial) */
+/* 10. Urano */
 [data-palette="urano"] {
     --panel-border: #06b6d4;
     --panel-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
@@ -256,7 +256,6 @@ body {
     max-width: 750px;
     background: var(--panel-bg);
     border-radius: 20px;
-    overflow: hidden;
     border: 2px solid var(--panel-border);
     box-shadow: var(--panel-shadow);
     height: fit-content;
@@ -269,6 +268,7 @@ body {
     pointer-events: none;
     overflow: hidden;
     z-index: 0;
+    border-radius: 18px;
 }
 
 .particles span {
@@ -294,20 +294,22 @@ body {
     color: var(--header-text);
     font-family: 'Orbitron', sans-serif;
     text-align: left;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
-    padding: 22px 25px;
+    padding: 18px 20px;
     z-index: 10;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: nowrap;
 }
 
 /* Grupo de botões no lado direito */
 .header-controls {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
+    flex-shrink: 0;
 }
 
 /* INTERRUPTOR MINI */
@@ -317,7 +319,6 @@ body {
     width: 46px;
     height: 24px;
     cursor: pointer;
-    z-index: 20;
 }
 
 .theme-switch input { display: none; }
@@ -348,7 +349,6 @@ body {
     border-radius: 50%;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 25;
 }
 
 input:checked + .slider { background-color: rgba(255, 255, 255, 0.4); }
@@ -362,7 +362,6 @@ input:checked + .slider::before { opacity: 0.4; }
     border: none;
     font-size: 20px;
     cursor: pointer;
-    z-index: 20;
     transition: transform 0.3s;
     display: flex;
     align-items: center;
@@ -370,23 +369,25 @@ input:checked + .slider::before { opacity: 0.4; }
 }
 .gear-btn:hover { transform: rotate(45deg); }
 
-/* MENU FLUTUANTE DE CORES COM ROLAGEM INTELIGENTE */
+/* MENU FLUTUANTE DE CORES CORRIGIDO (Sempre na frente) */
 .color-panel {
     display: none;
     position: absolute;
-    top: 65px;
+    top: 60px;
     right: 20px;
     background: #0f1320;
     border: 2px solid var(--panel-border);
-    padding: 12px;
+    padding: 10px;
     border-radius: 12px;
-    z-index: 9999 !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    gap: 8px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+    gap: 6px;
     flex-direction: column;
-    width: 190px;
-    max-height: 380px;
+    width: 180px;
+    max-height: 280px;
     overflow-y: auto;
+    
+    /* Z-INDEX ABSOLUTO PARA FICAR NA FRENTE DE TUDO */
+    z-index: 999999 !important; 
 }
 .color-panel.active { display: flex; }
 .color-opt {
@@ -412,15 +413,14 @@ input:checked + .slider::before { opacity: 0.4; }
 .login {
     display: flex;
     gap: 15px;
-    flex-wrap: wrap;
-    padding: 20px 25px;
-    justify-content: center;
+    flex-direction: column;
+    padding: 25px;
     position: relative;
     z-index: 1;
 }
 
 .login input {
-    flex: 1 1 200px;
+    width: 100%;
     padding: 14px 18px;
     border-radius: 12px;
     border: 1px solid var(--panel-border);
@@ -436,6 +436,7 @@ input:checked + .slider::before { opacity: 0.4; }
 }
 
 .login button {
+    width: 100%;
     padding: 14px 20px;
     border-radius: 12px;
     border: none;
@@ -446,7 +447,7 @@ input:checked + .slider::before { opacity: 0.4; }
     cursor: pointer;
     text-transform: uppercase;
     box-shadow: 0 0 15px rgba(34, 255, 150, 0.4);
-    transition: transform 0.2s;
+    transition: transform 0.2s, background-color 0.2s;
 }
 .login button:hover { transform: translateY(-2px); }
 
@@ -455,7 +456,7 @@ input:checked + .slider::before { opacity: 0.4; }
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    padding: 20px 25px 30px 25px;
+    padding: 0 25px 30px 25px;
     position: relative;
     z-index: 1;
 }
@@ -507,8 +508,9 @@ input:checked + .slider::before { opacity: 0.4; }
 [data-theme="light"] .dns.copiado { background: #10b981; color: #fff; }
 .testar { background: #475569; color: #fff; font-size:16px; width:36px; }
 
-@media(max-width: 650px){
+@media(max-width: 650px) {
     #resultado { grid-template-columns: 1fr; }
+    .header { font-size: 18px; }
 }
 </style>
 </head>
@@ -534,34 +536,34 @@ input:checked + .slider::before { opacity: 0.4; }
                 <div class="circle-preview" style="background:#16f09e;"></div> Verde Padrão
             </div>
             <div class="color-opt" onclick="setPalette('seven')">
-                <div class="circle-preview" style="background:#3b82f6;"></div> 🧿 Seven
+                <div class="circle-preview" style="background:#3b82f6;"></div> Seven
             </div>
             <div class="color-opt" onclick="setPalette('explosion')">
-                <div class="circle-preview" style="background:#facc15;"></div> 💣 Explosion
+                <div class="circle-preview" style="background:#facc15;"></div> Explosion
             </div>
             <div class="color-opt" onclick="setPalette('speed')">
-                <div class="circle-preview" style="background:#eab308;"></div> ⚡ Speed
+                <div class="circle-preview" style="background:#eab308;"></div> Speed
             </div>
             <div class="color-opt" onclick="setPalette('galaxy')">
-                <div class="circle-preview" style="background:#a855f7;"></div> 🛸 Galaxy
+                <div class="circle-preview" style="background:#a855f7;"></div> Galaxy
             </div>
             <div class="color-opt" onclick="setPalette('lunar')">
-                <div class="circle-preview" style="background:#94a3b8;"></div> 🌑 Lunar
+                <div class="circle-preview" style="background:#94a3b8;"></div> Lunar
             </div>
             <div class="color-opt" onclick="setPalette('atena')">
-                <div class="circle-preview" style="background:#0284c7;"></div> 🏛️ Atena
+                <div class="circle-preview" style="background:#0284c7;"></div> Atena
             </div>
             <div class="color-opt" onclick="setPalette('solar')">
-                <div class="circle-preview" style="background:#f97316;"></div> ☀️ Solar
+                <div class="circle-preview" style="background:#f97316;"></div> Solar
             </div>
             <div class="color-opt" onclick="setPalette('venus')">
-                <div class="circle-preview" style="background:#0d9488;"></div> 🌬️ Venus
+                <div class="circle-preview" style="background:#0d9488;"></div> Venus
             </div>
             <div class="color-opt" onclick="setPalette('fire')">
-                <div class="circle-preview" style="background:#dc2626;"></div> 🔥 Fire
+                <div class="circle-preview" style="background:#dc2626;"></div> Fire
             </div>
             <div class="color-opt" onclick="setPalette('urano')">
-                <div class="circle-preview" style="background:#06b6d4;"></div> 🪐 Urano
+                <div class="circle-preview" style="background:#06b6d4;"></div> Urano
             </div>
         </div>
     </div>
@@ -576,9 +578,7 @@ input:checked + .slider::before { opacity: 0.4; }
 </div>
 
 <script>
-// Carrega o estado do Tema e da Paleta salvos ao carregar a página
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Carrega tema
     const savedTheme = localStorage.getItem("app-theme");
     const themeChk = document.getElementById("theme-toggle-chk");
     if (savedTheme === "light") {
@@ -589,7 +589,6 @@ document.addEventListener("DOMContentLoaded", () => {
         themeChk.checked = false;
     }
 
-    // 2. Carrega paleta
     const savedPalette = localStorage.getItem("app-palette");
     if (savedPalette && savedPalette !== "default") {
         document.documentElement.setAttribute("data-palette", savedPalette);
@@ -598,7 +597,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Criar partículas
 const particlesContainer = document.getElementById('particles');
 for(let i=0; i<80; i++){
     let p = document.createElement('span');
@@ -611,7 +609,6 @@ for(let i=0; i<80; i++){
     particlesContainer.appendChild(p);
 }
 
-// Servidores
 const servidores = [
     {nome:"🧿 Seven 🧿", url:"http://seven.blcplay.com"},
     {nome:"💣 Explosion 💣", url:"http://nsync.space"},
