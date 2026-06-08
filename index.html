@@ -249,7 +249,7 @@ body {
     min-height: 100vh;
 }
 
-/* Painel principal corrigido com overflow para prender a borda do header */
+/* REMOVIDO OVERFLOW HIDDEN PARA PERMITIR MENU NA FRENTE */
 .panel {
     position: relative;
     width: 100%;
@@ -259,7 +259,6 @@ body {
     border: 2px solid var(--panel-border);
     box-shadow: var(--panel-shadow);
     height: fit-content;
-    overflow: hidden; /* Mantém o cabeçalho desenhando o cantinho arredondado */
 }
 
 /* Partículas */
@@ -269,6 +268,7 @@ body {
     pointer-events: none;
     overflow: hidden;
     z-index: 0;
+    border-radius: 18px;
 }
 
 .particles span {
@@ -287,7 +287,7 @@ body {
     100% { transform: translateY(-600px) translateX(20px); opacity: 0; }
 }
 
-/* Cabeçalho Consertado com Arredondamento Perfeito */
+/* Cabeçalho Ajustado com Raio Interno exato (-2px do container principal) */
 .header {
     position: relative;
     background: var(--header-bg);
@@ -302,8 +302,8 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
-    border-top-left-radius: 18px;  /* Força seguir a borda */
-    border-top-right-radius: 18px; /* Força seguir a borda */
+    border-top-left-radius: 18px;   
+    border-top-right-radius: 18px;
 }
 
 /* Grupo de botões no lado direito */
@@ -358,7 +358,7 @@ input:checked + .slider .knob { transform: translateX(22px); background-color: #
 input:checked + .slider::after { opacity: 1; }
 input:checked + .slider::before { opacity: 0.4; }
 
-/* BOTÃO LÁPIS SUBSTITUINDO A ENGRENAGEM */
+/* BOTÃO LÁPIS */
 .theme-panel-btn {
     background: transparent;
     border: none;
@@ -371,23 +371,23 @@ input:checked + .slider::before { opacity: 0.4; }
 }
 .theme-panel-btn:hover { transform: scale(1.15); }
 
-/* MENU FLUTUANTE DE CORES COM Z-INDEX MÁXIMO */
+/* MENU FLUTUANTE DE CORES COM CAMADA DE TOPO ABSOLUTA */
 .color-panel {
     display: none;
     position: absolute;
-    top: 60px;
+    top: 62px;
     right: 20px;
     background: #0f1320;
     border: 2px solid var(--panel-border);
     padding: 10px;
     border-radius: 12px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.9);
     gap: 6px;
     flex-direction: column;
     width: 180px;
     max-height: 280px;
     overflow-y: auto;
-    z-index: 999999 !important; /* Sempre à frente de tudo */
+    z-index: 9999999 !important; /* Valor extremo para ficar por cima de inputs/botões sempre */
 }
 .color-panel.active { display: flex; }
 .color-opt {
@@ -459,6 +459,8 @@ input:checked + .slider::before { opacity: 0.4; }
     padding: 0 25px 30px 25px;
     position: relative;
     z-index: 1;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
 }
 
 .server {
@@ -511,7 +513,7 @@ input:checked + .slider::before { opacity: 0.4; }
 @media(max-width: 650px) {
     #resultado { grid-template-columns: 1fr; }
     .header { font-size: 18px; }
-    .color-panel { right: 50%; transform: translateX(50%); top: 65px; } /* Centraliza em telas mobile */
+    .color-panel { right: 50%; transform: translateX(50%); top: 65px; } /* Centralizado perfeitamente no Mobile */
 }
 </style>
 </head>
