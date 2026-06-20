@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testador de Lista M3U</title>
+    <title>Testador de Lista M3U (Sem Bloqueio)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,13 +27,13 @@
         }
         button {
             padding: 10px 20px;
-            background-color: #28a745;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
-        button:hover { background-color: #218838; }
+        button:hover { background-color: #0056b3; }
         .status {
             margin-top: 15px;
             padding: 10px;
@@ -56,17 +56,17 @@
             text-align: center;
         }
         .card h3 { margin: 0 0 10px 0; font-size: 1.1em; }
-        .counter { font-size: 1.8em; font-weight: bold; color: #0056b3; }
+        .counter { font-size: 1.8em; font-weight: bold; color: #28a745; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>Validador Rápido de Lista M3U</h2>
-    <p>Insira a URL da lista M3U abaixo para testar o carregamento e a contagem de conteúdos.</p>
+    <p>Insira a URL da lista M3U. O sistema usa um desvio automático de segurança para evitar bloqueios do navegador.</p>
     
     <div style="display: flex; gap: 10px;">
-        <input type="text" id="m3uUrl" placeholder="http://servidor.com:8080/get.php?auth=..." />
+        <input type="text" id="m3uUrl" placeholder="Cole o link completo da M3U aqui..." />
         <button onclick="testarLista()">Testar Lista</button>
     </div>
 
@@ -74,7 +74,7 @@
 
     <div class="dashboard">
         <div class="card">
-            <h3>Canal de TV</h3>
+            <h3>Canais de TV</h3>
             <div id="tvCount" class="counter">0</div>
         </div>
         <div class="card">
@@ -90,42 +90,41 @@
 
 <script>
 async function testarLista() {
-    const url = document.getElementById('m3uUrl').value.trim();
-    const statusDiv = document.getElementById('statusMessage');
+    const urlOriginal = document.getElementById('m3uUrl').value.trim();
     
-    // Resetar contadores
+    // Resetar contadores na tela
     document.getElementById('tvCount').innerText = '0';
     document.getElementById('movieCount').innerText = '0';
     document.getElementById('seriesCount').innerText = '0';
 
-    if (!url) {
+    if (!urlOriginal) {
         showStatus('Por favor, insira uma URL válida.', 'error');
         return;
     }
 
-    showStatus('Conectando ao servidor e baixando a lista... Aguarde.', 'loading');
+    showStatus('Conectando de forma segura e baixando a lista... Aguarde (listas grandes podem demorar um pouco).', 'loading');
+
+    // Aqui está o truque: passamos o link através de um proxy que libera o CORS automaticamente
+    const urlComProxy = `https://corsproxy.io/?url=${encodeURIComponent(urlOriginal)}`;
 
     try {
-        // Faz a requisição para buscar o texto da lista
-        const response = await fetch(url);
+        const response = await fetch(urlComProxy);
         
         if (!response.ok) {
-            throw new Error(`Erro no servidor: Status ${response.status}`);
+            throw new Error(`Erro na resposta do servidor (Código ${response.status})`);
         }
 
         const text = await response.text();
         
         if (!text.includes('#EXTM3U')) {
-            throw new Error('O link respondeu, mas não parece ser uma lista M3U válida.');
+            throw new Error('O link respondeu, mas os dados recebidos não são de uma lista M3U válida.');
         }
 
-        showStatus('Lista carregada com sucesso! Processando dados...', 'loading');
-        
-        // Processar o texto para contar as categorias
+        showStatus('Lista baixada! Contando itens...', 'loading');
         processarM3U(text);
 
     } catch (error) {
-        showStatus(`Falha ao carregar: ${error.message}. <br><small>Nota: Se o servidor estiver online, o navegador pode ter bloqueado por erro de CORS (Segurança). Se puder, teste com uma extensão de desativar CORS ativa.</small>`, 'error');
+        showStatus(`Falha no teste: ${error.message}.<br><small>Se o app do cliente funciona e aqui falhou, o servidor deles pode estar bloqueando acessos vindos de fora do país ou de servidores de hospedagem.</small>`, 'error');
     }
 }
 
@@ -141,31 +140,29 @@ function processarM3U(text) {
     let movies = 0;
     let series = 0;
 
-    // Quebra o arquivo linha por linha
+    // Quebra o arquivo em linhas simples
     const linhas = text.split('\n');
 
     for (let i = 0; i < linhas.length; i++) {
         let linha = linhas[i].toUpperCase();
         
-        // Procuramos pelas tags padrão que o Xtream Codes / painéis usam para identificar o tipo
         if (linha.startsWith('#EXTINF:')) {
+            // Regras de identificação baseadas no padrão de links do Xtream Codes
             if (linha.includes('SERIES') || linha.includes('SÉRIES') || linha.includes('/SERIES/')) {
                 series++;
             } else if (linha.includes('MOVIES') || linha.includes('FILMES') || linha.includes('/MOVIES/') || linha.includes('/MOVIE/')) {
                 movies++;
             } else {
-                // Por padrão, se não se encaixar de forma óbvia em filmes/séries nas tags, costuma ser canal
                 tv++;
             }
         }
     }
 
-    // Atualiza a tela com os valores reais encontrados
-    document.getElementById('tvCount').innerText = tv;
-    document.getElementById('movieCount').innerText = movies;
-    document.getElementById('seriesCount').innerText = series;
+    document.getElementById('tvCount').innerText = tv.toLocaleString('pt-BR');
+    document.getElementById('movieCount').innerText = movies.toLocaleString('pt-BR');
+    document.getElementById('seriesCount').innerText = series.toLocaleString('pt-BR');
 
-    showStatus(`Sucesso! O servidor respondeu e a lista foi lida por completo.`, 'success');
+    showStatus(`Sucesso! O servidor respondeu perfeitamente e a lista está ativa.`, 'success');
 }
 </script>
 
