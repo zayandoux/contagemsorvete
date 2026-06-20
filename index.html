@@ -3,73 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analisador de Texto M3U</title>
+    <title>Testador M3U Automático</title>
     <style>
         body { font-family: Arial, sans-serif; background: #121214; color: #fff; padding: 20px; text-align: center; }
-        .box { max-width: 700px; margin: 30px auto; background: #202024; padding: 30px; border-radius: 8px; border: 1px solid #323238; }
-        textarea { width: 95%; height: 150px; padding: 12px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #121214; background: #121214; color: #fff; font-family: monospace; resize: none; }
-        button { padding: 12px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; color: white; background: #00875f; width: 100%; font-size: 16px; }
+        .box { max-width: 600px; margin: 50px auto; background: #202024; padding: 30px; border-radius: 8px; border: 1px solid #323238; }
+        input { width: 90%; padding: 12px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #121214; background: #121214; color: #fff; text-align: center; }
+        button { padding: 12px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; color: white; background: #00875f; width: 94%; font-size: 16px; }
         button:hover { background: #00b37e; }
         .status { margin: 20px 0; padding: 15px; border-radius: 4px; display: none; font-weight: bold; }
+        .loading { background: #e1a412; color: #000; }
         .success { background: #00875f; }
         .error { background: #f75a68; }
-        .res { font-size: 28px; margin: 10px 0; font-weight: bold; color: #00b37e; }
+        .res { font-size: 26px; margin: 10px 0; font-weight: bold; color: #00b37e; }
         .dashboard { display: flex; justify-content: space-around; margin-top: 25px; }
-        .card { background: #29292e; padding: 15px; border-radius: 6px; width: 28%; border: 1px solid #323238; }
     </style>
 </head>
 <body>
 
 <div class="box">
-    <h2>Analisador Local de Lista M3U</h2>
-    <p>Abra o arquivo da lista no Bloco de Notas, copie o texto e cole abaixo:</p>
+    <h2>Testador de Link M3U Direto</h2>
+    <p>Cole o link completo da lista e clique no botão abaixo:</p>
     
-    <textarea id="m3uTexto" placeholder="Cole o conteúdo do arquivo M3U aqui (deve começar com #EXTM3U)..."></textarea>
-    <button onclick="analisarTexto()">Analisar Conteúdo</button>
+    <input type="text" id="linkUrl" placeholder="http://seven.blcplay.com/get.php?..." />
+    <button onclick="testarLinkDireto()">Verificar Lista Agora</button>
 
     <div id="status" class="status"></div>
 
     <div class="dashboard">
-        <div class="card">Canais de TV <div id="tv" class="res">0</div></div>
-        <div class="card">Filmes <div id="mov" class="res">0</div></div>
-        <div class="card">Séries <div id="ser" class="res">0</div></div>
+        <div>TV <div id="tv" class="res">0</div></div>
+        <div>Filmes <div id="mov" class="res">0</div></div>
+        <div>Séries <div id="ser" class="res">0</div></div>
     </div>
 </div>
 
 <script>
-function analisarTexto() {
-    const txt = document.getElementById('m3uTexto').value.trim();
+async function testarLinkDireto() {
+    const urlOriginal = document.getElementById('linkUrl').value.trim();
     const status = document.getElementById('status');
     
+    if(!urlOriginal) return alert('Por favor, cole o link antes!');
+
     status.style.display = 'block';
+    status.className = 'status loading';
+    status.innerText = 'Baixando e processando a lista... Isso pode levar até 30 segundos dependendo do tamanho.';
 
-    if(!txt) {
+    // Mudamos para um formato de requisição que tenta extrair os dados decodificados do servidor
+    const urlProxy = `https://api.allorigins.win/get?url=${encodeURIComponent(urlOriginal)}`;
+
+    try {
+        const response = await fetch(urlProxy);
+        if(!response.ok) throw new Error();
+        
+        const data = await response.json();
+        const txt = data.contents; // Pega o conteúdo bruto retornado pela API
+
+        if(!txt || !txt.toUpperCase().includes('#EXTM3U')) {
+            status.className = 'status error';
+            status.innerText = 'O servidor bloqueou o acesso do robô ou o link está incorreto.';
+            return;
+        }
+
+        // Conta tudo de forma automatizada
+        let tv = (txt.match(/#EXTINF:/g) || []).length;
+        let movies = (txt.toUpperCase().match(/\/MOVIES\/|\/MOVIE\/|FILMES/g) || []).length;
+        let series = (txt.toUpperCase().match(/\/SERIES\/|SÉRIES/g) || []).length;
+        
+        let totalTv = tv - movies - series;
+        if(totalTv < 0) totalTv = 0;
+
+        document.getElementById('tv').innerText = totalTv.toLocaleString('pt-BR');
+        document.getElementById('mov').innerText = movies.toLocaleString('pt-BR');
+        document.getElementById('ser').innerText = series.toLocaleString('pt-BR');
+
+        status.className = 'status success';
+        status.innerText = 'Conectado com sucesso! Lista carregada.';
+
+    } catch (error) {
         status.className = 'status error';
-        status.innerText = 'Por favor, cole o texto da lista para analisar.';
-        return;
+        status.innerText = 'Erro na conexão. O servidor de IPTV recusou o acesso externo.';
     }
-
-    if(!txt.toUpperCase().includes('#EXTM3U')) {
-        status.className = 'status error';
-        status.innerText = 'Esse texto não parece ser de uma lista M3U válida (Falta o topo #EXTM3U).';
-        return;
-    }
-
-    status.className = 'status success';
-    status.innerText = 'Texto processado com sucesso!';
-
-    // Conta as ocorrências usando expressões regulares rápidas
-    let tv = (txt.match(/#EXTINF:/g) || []).length;
-    let movies = (txt.toUpperCase().match(/\/MOVIES\/|\/MOVIE\/|FILMES/g) || []).length;
-    let series = (txt.toUpperCase().match(/\/SERIES\/|SÉRIES/g) || []).length;
-    
-    // Ajusta os canais de TV subtraindo filmes e séries encontrados
-    let totalTv = tv - movies - series;
-    if (totalTv < 0) totalTv = 0;
-
-    document.getElementById('tv').innerText = totalTv.toLocaleString('pt-BR');
-    document.getElementById('mov').innerText = movies.toLocaleString('pt-BR');
-    document.getElementById('ser').innerText = series.toLocaleString('pt-BR');
 }
 </script>
 </body>
