@@ -3,86 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testador M3U Automático</title>
+    <title>Jogo da Cobrinha Clássico</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #121214; color: #fff; padding: 20px; text-align: center; }
-        .box { max-width: 600px; margin: 50px auto; background: #202024; padding: 30px; border-radius: 8px; border: 1px solid #323238; }
-        input { width: 90%; padding: 12px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #121214; background: #121214; color: #fff; text-align: center; }
-        button { padding: 12px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; color: white; background: #00875f; width: 94%; font-size: 16px; }
-        button:hover { background: #00b37e; }
-        .status { margin: 20px 0; padding: 15px; border-radius: 4px; display: none; font-weight: bold; }
-        .loading { background: #e1a412; color: #000; }
-        .success { background: #00875f; }
-        .error { background: #f75a68; }
-        .res { font-size: 26px; margin: 10px 0; font-weight: bold; color: #00b37e; }
-        .dashboard { display: flex; justify-content: space-around; margin-top: 25px; }
+        body {
+            background-color: #222;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        #placar {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            border: 4px solid #fff;
+            background-color: #111;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .mensagem {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #aaa;
+        }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h2>Testador de Link M3U Direto</h2>
-    <p>Cole o link completo da lista e clique no botão abaixo:</p>
-    
-    <input type="text" id="linkUrl" placeholder="http://seven.blcplay.com/get.php?..." />
-    <button onclick="testarLinkDireto()">Verificar Lista Agora</button>
+    <h1>Jogo da Cobrinha</h1>
+    <div id="placar">Pontuação: 0</div>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div class="mensagem">Use as **setas do teclado** para mover a cobrinha.</div>
 
-    <div id="status" class="status"></div>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const elementoPlacar = document.getElementById("placar");
 
-    <div class="dashboard">
-        <div>TV <div id="tv" class="res">0</div></div>
-        <div>Filmes <div id="mov" class="res">0</div></div>
-        <div>Séries <div id="ser" class="res">0</div></div>
-    </div>
-</div>
+        const tamanhoQuadrado = 20;
+        const dadosCanvas = canvas.width / tamanhoQuadrado;
 
-<script>
-async function testarLinkDireto() {
-    const urlOriginal = document.getElementById('linkUrl').value.trim();
-    const status = document.getElementById('status');
-    
-    if(!urlOriginal) return alert('Por favor, cole o link antes!');
+        let cobra = [{ x: 10, y: 10 }];
+        let maca = { x: 15, y: 15 };
+        let dx = 1;
+        let dy = 0;
+        let pontuacao = 0;
+        let mudouDirecao = false;
 
-    status.style.display = 'block';
-    status.className = 'status loading';
-    status.innerText = 'Baixando e processando a lista... Isso pode levar até 30 segundos dependendo do tamanho.';
+        // Loop principal do jogo
+        function principal() {
+            if (fimDeJogo()) {
+                alert(`Fim de Jogo! Sua pontuação final foi: ${pontuacao}`);
+                reiniciarJogo();
+            }
 
-    // Mudamos para um formato de requisição que tenta extrair os dados decodificados do servidor
-    const urlProxy = `https://api.allorigins.win/get?url=${encodeURIComponent(urlOriginal)}`;
+            mudouDirecao = false;
+            limparCanvas();
+            desenharMaca();
+            moverCobra();
+            desenharCobra();
 
-    try {
-        const response = await fetch(urlProxy);
-        if(!response.ok) throw new Error();
-        
-        const data = await response.json();
-        const txt = data.contents; // Pega o conteúdo bruto retornado pela API
-
-        if(!txt || !txt.toUpperCase().includes('#EXTM3U')) {
-            status.className = 'status error';
-            status.innerText = 'O servidor bloqueou o acesso do robô ou o link está incorreto.';
-            return;
+            setTimeout(principal, 100); // Velocidade do jogo (100ms)
         }
 
-        // Conta tudo de forma automatizada
-        let tv = (txt.match(/#EXTINF:/g) || []).length;
-        let movies = (txt.toUpperCase().match(/\/MOVIES\/|\/MOVIE\/|FILMES/g) || []).length;
-        let series = (txt.toUpperCase().match(/\/SERIES\/|SÉRIES/g) || []).length;
-        
-        let totalTv = tv - movies - series;
-        if(totalTv < 0) totalTv = 0;
+        // Limpa a tela a cada frame
+        function limparCanvas() {
+            ctx.fillStyle = "#111";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
 
-        document.getElementById('tv').innerText = totalTv.toLocaleString('pt-BR');
-        document.getElementById('mov').innerText = movies.toLocaleString('pt-BR');
-        document.getElementById('ser').innerText = series.toLocaleString('pt-BR');
+        // Desenha a cobrinha
+        function desenharCobra() {
+            cobra.forEach((parte, index) => {
+                ctx.fillStyle = index === 0 ? "#4CAF50" : "#8BC34A"; // Cabeça mais escura
+                ctx.fillRect(parte.x * tamanhoQuadrado, parte.y * tamanhoQuadrado, tamanhoQuadrado - 2, tamanhoQuadrado - 2);
+            });
+        }
 
-        status.className = 'status success';
-        status.innerText = 'Conectado com sucesso! Lista carregada.';
+        // Move a cobrinha e checa se comeu a maçã
+        function moverCobra() {
+            const cabeca = { x: cobra[0].x + dx, y: cobra[0].y + dy };
+            cobra.unshift(cabeca);
 
-    } catch (error) {
-        status.className = 'status error';
-        status.innerText = 'Erro na conexão. O servidor de IPTV recusou o acesso externo.';
-    }
-}
-</script>
+            if (cabeca.x === maca.x && cabeca.y === maca.y) {
+                pontuacao += 10;
+                elementoPlacar.innerText = `Pontuação: ${pontuacao}`;
+                gerarMaca();
+            } else {
+                cobra.pop();
+            }
+        }
+
+        // Gera uma nova maçã em posição aleatória
+        function gerarMaca() {
+            maca.x = Math.floor(Math.random() * dadosCanvas);
+            maca.y = Math.floor(Math.random() * dadosCanvas);
+
+            // Garante que a maçã não nasça dentro da cobra
+            cobra.forEach(parte => {
+                if (parte.x === maca.x && parte.y === maca.y) {
+                    gerarMaca();
+                }
+            });
+        }
+
+        // Desenha a maçã
+        function desenharMaca() {
+            ctx.fillStyle = "#FF5722";
+            ctx.fillRect(maca.x * tamanhoQuadrado, maca.y * tamanhoQuadrado, tamanhoQuadrado - 2, tamanhoQuadrado - 2);
+        }
+
+        // Verifica colisões (paredes ou o próprio corpo)
+        function fimDeJogo() {
+            const cabeca = cobra[0];
+
+            // Colisão com as paredes
+            const colidiuParede = cabeca.x < 0 || cabeca.x >= dadosCanvas || cabeca.y < 0 || cabeca.y >= dadosCanvas;
+
+            // Colisão com o próprio corpo
+            let colidiuCorpo = false;
+            for (let i = 1; i < cobra.length; i++) {
+                if (cobra[i].x === cabeca.x && cobra[i].y === cabeca.y) {
+                    colidiuCorpo = true;
+                }
+            }
+
+            return colidiuParede || colidiuCorpo;
+        }
+
+        // Reseta as variáveis para começar de novo
+        function reiniciarJogo() {
+            cobra = [{ x: 10, y: 10 }];
+            maca = { x: 15, y: 15 };
+            dx = 1;
+            dy = 0;
+            pontuacao = 0;
+            elementoPlacar.innerText = `Pontuação: ${pontuacao}`;
+        }
+
+        // Escuta as teclas pressionadas
+        document.addEventListener("keydown", mudarDirecao);
+
+        function mudarDirecao(evento) {
+            if (mudouDirecao) return;
+
+            const TECLA_ESQUERDA = 37;
+            const TECLA_CIMA = 38;
+            const TECLA_DIREITA = 39;
+            const TECLA_BAIXO = 40;
+
+            const teclaPressionada = evento.keyCode;
+
+            const indoParaCima = dy === -1;
+            const indoParaBaixo = dy === 1;
+            const indoParaDireita = dx === 1;
+            const indoParaEsquerda = dx === -1;
+
+            if (teclaPressionada === TECLA_ESQUERDA && !indoParaDireita) {
+                dx = -1;
+                dy = 0;
+                mudouDirecao = true;
+            }
+            if (teclaPressionada === TECLA_CIMA && !indoParaBaixo) {
+                dx = 0;
+                dy = -1;
+                mudouDirecao = true;
+            }
+            if (teclaPressionada === TECLA_DIREITA && !indoParaEsquerda) {
+                dx = 1;
+                dy = 0;
+                mudouDirecao = true;
+            }
+            if (teclaPressionada === TECLA_BAIXO && !indoParaCima) {
+                dx = 0;
+                dy = 1;
+                mudouDirecao = true;
+            }
+        }
+
+        // Inicia o jogo
+        principal();
+    </script>
 </body>
 </html>
